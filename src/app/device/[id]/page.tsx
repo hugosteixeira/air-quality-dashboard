@@ -1,5 +1,7 @@
 "use client";
 
+import { GetStaticPaths, GetStaticProps } from 'next';
+
 import React, { useEffect, useState } from 'react';
 import { useParams } from 'next/navigation';
 import { fetchReadings } from '../../../libs/api';
@@ -18,7 +20,7 @@ const DeviceDetails: React.FC = () => {
   const [filter, setFilter] = useState<string>('instant');
 
   useEffect(() => {
-    if (id) {
+    if (id && typeof id === 'string') {
       const getData = async () => {
         try {
           const readingsData = await fetchReadings({ deviceId: id, reading_type: filter });
@@ -26,7 +28,11 @@ const DeviceDetails: React.FC = () => {
           setReadings(readingsData);
           setFilteredReadings(readingsData);
         } catch (err) {
-          setError(err.message);
+          if (err instanceof Error) {
+            setError(err.message);
+          } else {
+            setError('An unknown error occurred');
+          }
         }
       };
 
@@ -135,6 +141,4 @@ const DeviceDetails: React.FC = () => {
       />
     </div>
   );
-};
-
-export default DeviceDetails;
+}

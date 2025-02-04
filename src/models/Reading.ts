@@ -1,7 +1,7 @@
 export interface Reading {
   device_id: string;
   ts: string;
-  type: string;
+  reading_type: string;
   co2?: number;
   hm?: number;
   pm1?: number;

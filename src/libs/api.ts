@@ -19,7 +19,7 @@ export const fetchDevices = async (): Promise<Device[]> => {
 export const fetchReadings = async (filters: { reading_type?: string; deviceId?: string; deviceIds?: string[]; startTime?: string; endTime?: string } = {}): Promise<Reading[]> => {
   try {
     const { reading_type, deviceId, deviceIds, startTime, endTime } = filters;
-    const params: any = {};
+    const params: { [key: string]: string } = {};
 
     if (reading_type) params.reading_type = reading_type;
     if (deviceId) params.device_id = deviceId;

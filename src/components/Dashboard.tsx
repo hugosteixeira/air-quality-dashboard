@@ -37,7 +37,11 @@ const Dashboard: React.FC = () => {
         setReadings(readingsMap);
         console.log('Readings Data:', readingsMap); // Log the readings data to inspect the structure
       } catch (err) {
-        setError(err.message);
+        if (err instanceof Error) {
+          setError(err.message);
+        } else {
+          setError('An unknown error occurred');
+        }
       }
     };
 
