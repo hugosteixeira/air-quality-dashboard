@@ -1,7 +1,5 @@
 "use client";
 
-import { GetStaticPaths, GetStaticProps } from 'next';
-
 import React, { useEffect, useState } from 'react';
 import { useParams } from 'next/navigation';
 import { fetchReadings } from '../../../libs/api';
@@ -141,4 +139,6 @@ const DeviceDetails: React.FC = () => {
       />
     </div>
   );
-}
+};
+
+export default DeviceDetails;
