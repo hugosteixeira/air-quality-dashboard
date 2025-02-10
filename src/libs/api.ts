@@ -3,7 +3,7 @@ import { Device } from '../models/Device';
 import { Reading } from '../models/Reading';
 
 console.log('Environment Variables:', process.env); // Add this line to log all environment variables
-const API_BASE_URL = "localhost";
+const API_BASE_URL = "//localhost";
 
 export const fetchDevices = async (): Promise<Device[]> => {
   try {
