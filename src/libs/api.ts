@@ -3,7 +3,7 @@ import { Device } from '../models/Device';
 import { Reading } from '../models/Reading';
 
 console.log('Environment Variables:', process.env); // Add this line to log all environment variables
-const API_BASE_URL = "//localhost";
+const API_BASE_URL = "http://airquality.click"; // Change this line to use the correct API base URL
 
 export const fetchDevices = async (): Promise<Device[]> => {
   try {
