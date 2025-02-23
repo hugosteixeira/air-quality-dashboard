@@ -1,12 +1,13 @@
 "use client";
 
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useCallback } from 'react';
 import { useParams } from 'next/navigation';
 import { fetchReadings } from '../../../libs/api';
 import { Reading } from '../../../models/Reading';
 import { Select, Typography, DatePicker, Tabs } from 'antd';
 import DataTable from '../../../components/DataTable';
 import GraphsTable from '../../../components/GraphsTable';
+import { Dayjs } from 'dayjs';
 import '../../../styles/globals.css';
 
 const { Option } = Select;
@@ -25,11 +26,11 @@ const DeviceDetails: React.FC = () => {
   const [currentPage, setCurrentPage] = useState<number>(1);
   const [totalReadings, setTotalReadings] = useState<number>(0);
 
-  const handleGraphDateChange = (dates: any, dateStrings: [string, string]) => {
+  const handleGraphDateChange = (dates: (Dayjs | null)[] | null, dateStrings: [string, string]) => {
     setGraphDateRange(dateStrings);
   };
 
-  const handleTableDateChange = (dates: any, dateStrings: [string, string]) => {
+  const handleTableDateChange = (dates: (Dayjs | null)[] | null, dateStrings: [string, string]) => {
     setTableDateRange(dateStrings);
   };
 
@@ -45,7 +46,7 @@ const DeviceDetails: React.FC = () => {
     setCurrentPage(page);
   };
 
-  const fetchGraphReadings = async () => {
+  const fetchGraphReadings = useCallback(async () => {
     if (id && typeof id === 'string') {
       const getData = async () => {
         try {
@@ -70,9 +71,9 @@ const DeviceDetails: React.FC = () => {
 
       getData();
     }
-  };
+  }, [id, graphFilter, graphDateRange]);
 
-  const fetchTableReadings = async () => {
+  const fetchTableReadings = useCallback(async () => {
     if (id && typeof id === 'string') {
       const getData = async () => {
         try {
@@ -99,15 +100,15 @@ const DeviceDetails: React.FC = () => {
 
       getData();
     }
-  };
+  }, [id, tableFilter, tableDateRange, currentPage]);
 
   useEffect(() => {
     fetchGraphReadings();
-  }, [id, graphFilter, graphDateRange]);
+  }, [fetchGraphReadings]);
 
   useEffect(() => {
     fetchTableReadings();
-  }, [id, tableFilter, tableDateRange, currentPage]);
+  }, [fetchTableReadings]);
 
   if (error) {
     return <div>Erro: {error}</div>;

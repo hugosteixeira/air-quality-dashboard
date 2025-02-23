@@ -1,9 +1,10 @@
 import React from 'react';
 import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from 'recharts';
+import { Reading } from '../models/Reading';
 
 interface GraphProps {
-  data: any[];
-  dataKey: string;
+  data: Reading[];
+  dataKey: keyof Reading;
   label: string;
   readingType: string;
 }
@@ -38,9 +39,9 @@ const Graph: React.FC<GraphProps> = ({ data, dataKey, label, readingType }) => {
     });
   };
 
-  const minValue = Math.min(...data.map(item => item[dataKey]));
-  const maxValue = Math.max(...data.map(item => item[dataKey]));
-  const avgValue = (data.reduce((sum, item) => sum + item[dataKey], 0) / data.length).toFixed(2);
+  const minValue = Math.min(...data.map(item => item[dataKey] as number));
+  const maxValue = Math.max(...data.map(item => item[dataKey] as number));
+  const avgValue = (data.reduce((sum, item) => sum + (item[dataKey] as number), 0) / data.length).toFixed(2);
 
   return (
     <div className="graph-card">
