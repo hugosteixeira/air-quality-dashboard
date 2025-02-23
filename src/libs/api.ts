@@ -16,21 +16,22 @@ export const fetchDevices = async (): Promise<Device[]> => {
   }
 };
 
-export const fetchReadings = async (filters: { reading_type?: string; deviceId?: string; deviceIds?: string[]; startTime?: string; endTime?: string } = {}): Promise<Reading[]> => {
+export const fetchReadings = async (filters: { reading_type?: string; deviceId?: string; start_ts?: string; end_ts?: string; skip?: number; limit?: number } = {}): Promise<{ readings: Reading[], total: number }> => {
   try {
-    const { reading_type, deviceId, deviceIds, startTime, endTime } = filters;
-    const params: { [key: string]: string } = {};
+    const { reading_type, deviceId, start_ts, end_ts, skip, limit } = filters;
+    const params: { [key: string]: string | number } = {};
 
     if (reading_type) params.reading_type = reading_type;
     if (deviceId) params.device_id = deviceId;
-    if (deviceIds) params.device_ids = deviceIds.join(',');
-    if (startTime) params.start_time = startTime;
-    if (endTime) params.end_time = endTime;
+    if (start_ts) params.start_ts = start_ts;
+    if (end_ts) params.end_ts = end_ts;
+    if (skip !== undefined) params.skip = skip;
+    if (limit !== undefined) params.limit = limit;
 
     console.log('Fetch Readings Params:', params); // Log the parameters used for fetching readings
     const response = await axios.get(`${API_BASE_URL}:8000/readings`, { params });
-    console.log('alow', response.data); // Log the response data to inspect the structure
-    return response.data;
+    console.log('Responde data', response.data); // Log the response data to inspect the structure
+    return { readings: response.data.readings, total: response.data.total_count };
   } catch (error) {
     console.error('Error fetching readings:', error);
     throw new Error('Failed to fetch readings');

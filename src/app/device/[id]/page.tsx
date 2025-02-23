@@ -4,27 +4,61 @@ import React, { useEffect, useState } from 'react';
 import { useParams } from 'next/navigation';
 import { fetchReadings } from '../../../libs/api';
 import { Reading } from '../../../models/Reading';
-import { Table, Select, Typography } from 'antd';
+import { Select, Typography, DatePicker, Tabs } from 'antd';
+import DataTable from '../../../components/DataTable';
+import GraphsTable from '../../../components/GraphsTable';
 import '../../../styles/globals.css';
 
 const { Option } = Select;
 const { Title } = Typography;
+const { RangePicker } = DatePicker;
 
 const DeviceDetails: React.FC = () => {
   const { id } = useParams();
-  const [readings, setReadings] = useState<Reading[]>([]);
-  const [filteredReadings, setFilteredReadings] = useState<Reading[]>([]);
+  const [graphReadings, setGraphReadings] = useState<Reading[]>([]);
+  const [tableReadings, setTableReadings] = useState<Reading[]>([]);
   const [error, setError] = useState<string | null>(null);
-  const [filter, setFilter] = useState<string>('instant');
+  const [graphFilter, setGraphFilter] = useState<string>('instant');
+  const [tableFilter, setTableFilter] = useState<string>('instant');
+  const [graphDateRange, setGraphDateRange] = useState<[string, string] | null>(null);
+  const [tableDateRange, setTableDateRange] = useState<[string, string] | null>(null);
+  const [currentPage, setCurrentPage] = useState<number>(1);
+  const [totalReadings, setTotalReadings] = useState<number>(0);
 
-  useEffect(() => {
+  const handleGraphDateChange = (dates: any, dateStrings: [string, string]) => {
+    setGraphDateRange(dateStrings);
+  };
+
+  const handleTableDateChange = (dates: any, dateStrings: [string, string]) => {
+    setTableDateRange(dateStrings);
+  };
+
+  const handleGraphFilterChange = (value: string) => {
+    setGraphFilter(value);
+  };
+
+  const handleTableFilterChange = (value: string) => {
+    setTableFilter(value);
+  };
+
+  const handleTableChange = (page: number) => {
+    setCurrentPage(page);
+  };
+
+  const fetchGraphReadings = async () => {
     if (id && typeof id === 'string') {
       const getData = async () => {
         try {
-          const readingsData = await fetchReadings({ deviceId: id, reading_type: filter });
-          console.log('Fetched Readings:', readingsData); // Log fetched readings data
-          setReadings(readingsData);
-          setFilteredReadings(readingsData);
+          const { readings: readingsData } = await fetchReadings({
+            deviceId: id,
+            reading_type: graphFilter,
+            start_ts: graphDateRange ? graphDateRange[0] : undefined,
+            end_ts: graphDateRange ? graphDateRange[1] : undefined,
+            skip: 0,
+            limit: 30, // Fetch 30 records for the graph data
+          });
+          console.log('Fetched Graph Readings:', readingsData); // Log fetched readings data
+          setGraphReadings(readingsData);
         } catch (err) {
           if (err instanceof Error) {
             setError(err.message);
@@ -36,17 +70,44 @@ const DeviceDetails: React.FC = () => {
 
       getData();
     }
-  }, [id, filter]);
+  };
+
+  const fetchTableReadings = async () => {
+    if (id && typeof id === 'string') {
+      const getData = async () => {
+        try {
+          const { readings: readingsData, total } = await fetchReadings({
+            deviceId: id,
+            reading_type: tableFilter,
+            start_ts: tableDateRange ? tableDateRange[0] : undefined,
+            end_ts: tableDateRange ? tableDateRange[1] : undefined,
+            skip: ((currentPage || 1) - 1) * 10,
+            limit: 10,
+          });
+          console.log('Fetched Table Readings:', readingsData); // Log fetched readings data
+          setTableReadings(readingsData);
+          console.log("total", total); // Log total readings
+          setTotalReadings(total);
+        } catch (err) {
+          if (err instanceof Error) {
+            setError(err.message);
+          } else {
+            setError('An unknown error occurred');
+          }
+        }
+      };
+
+      getData();
+    }
+  };
 
   useEffect(() => {
-    console.log('Filter:', filter); // Log filter value
-    console.log('Readings:', readings); // Log readings data
-    if (filter) {
-      setFilteredReadings(readings.filter(reading => reading.reading_type && reading.reading_type.toLowerCase() === filter.toLowerCase()));
-    } else {
-      setFilteredReadings(readings);
-    }
-  }, [filter, readings]);
+    fetchGraphReadings();
+  }, [id, graphFilter, graphDateRange]);
+
+  useEffect(() => {
+    fetchTableReadings();
+  }, [id, tableFilter, tableDateRange, currentPage]);
 
   if (error) {
     return <div>Erro: {error}</div>;
@@ -57,7 +118,13 @@ const DeviceDetails: React.FC = () => {
       title: 'Data e Hora',
       dataIndex: 'ts',
       key: 'ts',
-      render: (text: string) => new Date(text).toLocaleString('pt-BR'),
+      render: (text: string) => new Date(text).toLocaleString('pt-BR', {
+        day: '2-digit',
+        month: '2-digit',
+        year: '2-digit',
+        hour: '2-digit',
+        minute: '2-digit',
+      }),
     },
     {
       title: <span>CO₂ <span className="table-unit">(ppm)</span></span>,
@@ -116,27 +183,63 @@ const DeviceDetails: React.FC = () => {
     },
   ];
 
+  const tabItems = [
+    {
+      key: '1',
+      label: 'Gráficos',
+      children: (
+        <>
+          <div className="flex gap-4 justify-end w-full" style={{ width: '1200px' }}>
+            <RangePicker onChange={handleGraphDateChange} style={{ marginBottom: 16 }} />
+            <Select
+              placeholder="Filtrar por Tipo de Leitura"
+              value={graphFilter}
+              onChange={handleGraphFilterChange}
+              style={{ width: 200, marginBottom: 16 }}
+            >
+              <Option value="instant">Minuto a Minuto</Option>
+              <Option value="hourly">Horário</Option>
+              <Option value="daily">Diário</Option>
+            </Select>
+          </div>
+          <GraphsTable data={graphReadings} readingType={graphFilter} />
+        </>
+      ),
+    },
+    {
+      key: '2',
+      label: 'Tabela de Dados',
+      children: (
+        <>
+          <div className="flex gap-4 justify-end w-full" style={{ maxWidth: '1200px' }}>
+            <RangePicker onChange={handleTableDateChange} style={{ marginBottom: 16 }} />
+            <Select
+              placeholder="Filtrar por Tipo de Leitura"
+              value={tableFilter}
+              onChange={handleTableFilterChange}
+              style={{ width: 200, marginBottom: 16 }}
+            >
+              <Option value="instant">Minuto a Minuto</Option>
+              <Option value="hourly">Horário</Option>
+              <Option value="daily">Diário</Option>
+            </Select>
+          </div>
+          <DataTable
+            data={tableReadings}
+            currentPage={currentPage}
+            totalReadings={totalReadings}
+            onPageChange={handleTableChange}
+            columns={columns}
+          />
+        </>
+      ),
+    },
+  ];
+
   return (
     <div className="flex flex-col gap-8 items-center sm:items-center flex-1">
       <Title level={2}>Dados do Dispositivo</Title>
-      <Select
-        placeholder="Filtrar por Tipo de Leitura"
-        value={filter}
-        onChange={(value) => setFilter(value)}
-        style={{ width: 200, marginBottom: 16 }}
-      >
-        <Option value="instant">Minuto a Minuto</Option>
-        <Option value="hourly">Horário</Option>
-        <Option value="daily">Diário</Option>
-      </Select>
-      <Table
-        dataSource={filteredReadings}
-        columns={columns}
-        rowKey="ts"
-        size="small"
-        pagination={false}
-        style={{ width: '100%', maxWidth: '1200px' }}
-      />
+      <Tabs defaultActiveKey="1" items={tabItems} />
     </div>
   );
 };
