@@ -113,76 +113,6 @@ const DeviceDetails: React.FC = () => {
     return <div>Erro: {error}</div>;
   }
 
-  const columns = [
-    {
-      title: 'Data e Hora',
-      dataIndex: 'ts',
-      key: 'ts',
-      render: (text: string) => new Date(text).toLocaleString('pt-BR', {
-        day: '2-digit',
-        month: '2-digit',
-        year: '2-digit',
-        hour: '2-digit',
-        minute: '2-digit',
-      }),
-    },
-    {
-      title: <span>CO₂ <span className="table-unit">(ppm)</span></span>,
-      dataIndex: 'co2',
-      key: 'co2',
-    },
-    {
-      title: <span>Umidade <span className="table-unit">(%)</span></span>,
-      dataIndex: 'hm',
-      key: 'hm',
-    },
-    {
-      title: <span>PM1 <span className="table-unit">(µg/m³)</span></span>,
-      dataIndex: 'pm1',
-      key: 'pm1',
-    },
-    {
-      title: <span>PM10 AQICN <span className="table-unit"></span></span>,
-      dataIndex: 'pm10_aqicn',
-      key: 'pm10_aqicn',
-    },
-    {
-      title: <span>PM10 AQIUS <span className="table-unit"></span></span>,
-      dataIndex: 'pm10_aqius',
-      key: 'pm10_aqius',
-    },
-    {
-      title: <span>PM10 <span className="table-unit">(µg/m³)</span></span>,
-      dataIndex: 'pm10_conc',
-      key: 'pm10_conc',
-    },
-    {
-      title: <span>PM25 AQICN <span className="table-unit"></span></span>,
-      dataIndex: 'pm25_aqicn',
-      key: 'pm25_aqicn',
-    },
-    {
-      title: <span>PM25 AQIUS <span className="table-unit"></span></span>,
-      dataIndex: 'pm25_aqius',
-      key: 'pm25_aqius',
-    },
-    {
-      title: <span>PM25 <span className="table-unit">(µg/m³)</span></span>,
-      dataIndex: 'pm25_conc',
-      key: 'pm25_conc',
-    },
-    {
-      title: <span>Pressão <span className="table-unit">(mb)</span></span>,
-      dataIndex: 'pr',
-      key: 'pr',
-    },
-    {
-      title: <span>Temperatura <span className="table-unit">(°C)</span></span>,
-      dataIndex: 'tp',
-      key: 'tp',
-    },
-  ];
-
   const tabItems = [
     {
       key: '1',
@@ -229,7 +159,6 @@ const DeviceDetails: React.FC = () => {
             currentPage={currentPage}
             totalReadings={totalReadings}
             onPageChange={handleTableChange}
-            columns={columns}
           />
         </>
       ),
