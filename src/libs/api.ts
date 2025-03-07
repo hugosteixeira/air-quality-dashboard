@@ -26,7 +26,7 @@ export const fetchReadings = async (filters: { reading_type?: string; deviceId?:
     if (start_ts) params.start_ts = start_ts;
     if (end_ts) params.end_ts = end_ts;
     if (skip !== undefined) params.skip = skip;
-    if (limit !== undefined) params.limit = limit;
+    if (limit !== undefined) params.limit = limit; 
 
     console.log('Fetch Readings Params:', params); // Log the parameters used for fetching readings
     const response = await axios.get(`${API_BASE_URL}/readings`, { params });
