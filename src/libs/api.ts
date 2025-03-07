@@ -3,12 +3,12 @@ import { Device } from '../models/Device';
 import { Reading } from '../models/Reading';
 
 console.log('Environment Variables:', process.env); // Add this line to log all environment variables
-const API_BASE_URL = "https://airquality.click"; // Change this line to use the correct API base URL
+const API_BASE_URL = "https://air-quality-api-zlqt.onrender.com/"; // Change this line to use the correct API base URL
 
 export const fetchDevices = async (): Promise<Device[]> => {
   try {
     console.log('API_BASE_URL:', API_BASE_URL);
-    const response = await axios.get(`${API_BASE_URL}:8000/devices`);
+    const response = await axios.get(`${API_BASE_URL}/devices`);
     return response.data;
   } catch (error) {
     console.error('Error fetching devices:', error);
@@ -29,7 +29,7 @@ export const fetchReadings = async (filters: { reading_type?: string; deviceId?:
     if (limit !== undefined) params.limit = limit;
 
     console.log('Fetch Readings Params:', params); // Log the parameters used for fetching readings
-    const response = await axios.get(`${API_BASE_URL}:8000/readings`, { params });
+    const response = await axios.get(`${API_BASE_URL}/readings`, { params });
     console.log('Responde data', response.data); // Log the response data to inspect the structure
     return { readings: response.data.readings, total: response.data.total_count };
   } catch (error) {
@@ -40,7 +40,7 @@ export const fetchReadings = async (filters: { reading_type?: string; deviceId?:
 
 export const fetchLatestInstantReadings = async (deviceId: string): Promise<Reading> => {
   try {
-    const response = await axios.get(`${API_BASE_URL}:8000/readings/latest`, {
+    const response = await axios.get(`${API_BASE_URL}/readings/latest`, {
       params: { device_id: deviceId }
     });
     return response.data;
