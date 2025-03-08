@@ -44,6 +44,7 @@ export default function RootLayout({
                 items={menuItems}
                 onClick={({ key }) => {
                   if (key === '1') router.push('/');
+                  if (key === '3') router.push('/export');
                   // Add more navigation logic here if needed
                 }}
               />

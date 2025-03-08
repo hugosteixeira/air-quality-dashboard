@@ -7,7 +7,6 @@ const API_BASE_URL = "https://air-quality-api-zlqt.onrender.com"; // Change this
 
 export const fetchDevices = async (): Promise<Device[]> => {
   try {
-    console.log('API_BASE_URL:', API_BASE_URL);
     const response = await axios.get(`${API_BASE_URL}/devices`);
     return response.data;
   } catch (error) {
@@ -28,9 +27,9 @@ export const fetchReadings = async (filters: { reading_type?: string; deviceId?:
     if (skip !== undefined) params.skip = skip;
     if (limit !== undefined) params.limit = limit; 
 
-    console.log('Fetch Readings Params:', params); // Log the parameters used for fetching readings
-    const response = await axios.get(`${API_BASE_URL}/readings`, { params });
-    console.log('Responde data', response.data); // Log the response data to inspect the structure
+    const url = `${API_BASE_URL}/readings`;
+    const response = await axios.get(url, { params });
+    console.log('Fetched Readings:', response.data); // Log the response data to inspect the structure
     return { readings: response.data.readings, total: response.data.total_count };
   } catch (error) {
     console.error('Error fetching readings:', error);
