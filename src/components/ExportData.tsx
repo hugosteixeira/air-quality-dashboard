@@ -2,9 +2,10 @@ import React, { useState, useEffect } from 'react';
 import { fetchDevices, fetchReadings } from '../libs/api';
 import { Device } from '../models/Device';
 import { Reading } from '../models/Reading';
-import { Select, DatePicker, Button, Typography } from 'antd';
+import { Select, DatePicker, Button, Typography, ConfigProvider } from 'antd';
 import { Dayjs } from 'dayjs';
 import { Parser } from 'json2csv';
+import ptBR from 'antd/lib/locale/pt_BR';
 import '../styles/globals.css';
 
 const { Option } = Select;
@@ -82,41 +83,43 @@ const ExportData: React.FC = () => {
   };
 
   return (
-    <div className="flex flex-col gap-8 items-center sm:items-center flex-1">
-      <Title level={2}>Exportar Dados</Title>
-      <div className="flex gap-4 justify-end w-full" style={{ maxWidth: '1200px' }}>
-        <Select
-          placeholder="Selecionar Dispositivo"
-          onChange={setSelectedDevice}
-          style={{ width: 200, marginBottom: 16 }}
-        >
-          {devices.map(device => (
-            <Option key={device.id} value={device.id}>
-              {device.name}
-            </Option>
-          ))}
-        </Select>
-        <Select
-          placeholder="Filtrar por Tipo de Leitura"
-          onChange={setReadingType}
-          style={{ width: 200, marginBottom: 16 }}
-        >
-          <Option value="instant">Minuto a Minuto</Option>
-          <Option value="hourly">Horário</Option>
-          <Option value="daily">Diário</Option>
-        </Select>
-        <RangePicker onChange={handleDateChange} style={{ marginBottom: 16 }} />
-        <Button type="primary" onClick={handleExport} style={{ marginBottom: 16 }}>
-          Exportar
-        </Button>
-      </div>
-      {/* Display export data or a message */}
-      {exportData.length > 0 && (
-        <div>
-          <p>Dados exportados com sucesso!</p>
+    <ConfigProvider locale={ptBR}>
+      <div className="flex flex-col gap-8 items-center sm:items-center flex-1">
+        <Title level={2}>Exportar Dados</Title>
+        <div className="flex gap-4 justify-end w-full" style={{ maxWidth: '1200px' }}>
+          <Select
+            placeholder="Selecionar Dispositivo"
+            onChange={setSelectedDevice}
+            style={{ width: 200, marginBottom: 16 }}
+          >
+            {devices.map(device => (
+              <Option key={device.id} value={device.id}>
+                {device.name}
+              </Option>
+            ))}
+          </Select>
+          <Select
+            placeholder="Filtrar por Tipo de Leitura"
+            onChange={setReadingType}
+            style={{ width: 200, marginBottom: 16 }}
+          >
+            <Option value="instant">Minuto a Minuto</Option>
+            <Option value="hourly">Horário</Option>
+            <Option value="daily">Diário</Option>
+          </Select>
+          <RangePicker onChange={handleDateChange} style={{ marginBottom: 16 }} />
+          <Button type="primary" onClick={handleExport} style={{ marginBottom: 16 }}>
+            Exportar
+          </Button>
         </div>
-      )}
-    </div>
+        {/* Display export data or a message */}
+        {exportData.length > 0 && (
+          <div>
+            <p>Dados exportados com sucesso!</p>
+          </div>
+        )}
+      </div>
+    </ConfigProvider>
   );
 };
 

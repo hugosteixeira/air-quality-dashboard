@@ -4,10 +4,11 @@ import React, { useEffect, useState, useCallback } from 'react';
 import { useParams } from 'next/navigation';
 import { fetchReadings } from '../../../libs/api';
 import { Reading } from '../../../models/Reading';
-import { Select, Typography, DatePicker, Tabs } from 'antd';
+import { Select, Typography, DatePicker, Tabs, ConfigProvider } from 'antd';
 import DataTable from '../../../components/DataTable';
 import GraphsTable from '../../../components/GraphsTable';
 import { Dayjs } from 'dayjs';
+import ptBR from 'antd/lib/locale/pt_BR';
 import '../../../styles/globals.css';
 
 const { Option } = Select;
@@ -167,10 +168,12 @@ const DeviceDetails: React.FC = () => {
   ];
 
   return (
-    <div className="flex flex-col gap-8 items-center sm:items-center flex-1">
-      <Title level={2}>Dados do Dispositivo</Title>
-      <Tabs defaultActiveKey="1" items={tabItems} />
-    </div>
+    <ConfigProvider locale={ptBR}>
+      <div className="flex flex-col gap-8 items-center sm:items-center flex-1">
+        <Title level={2}>Dados do Dispositivo</Title>
+        <Tabs defaultActiveKey="1" items={tabItems} />
+      </div>
+    </ConfigProvider>
   );
 };
 

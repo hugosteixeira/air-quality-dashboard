@@ -2,7 +2,7 @@
 
 import Head from 'next/head';
 import { Layout, Menu, Typography } from 'antd';
-import { useRouter } from 'next/navigation';
+import { useRouter, usePathname } from 'next/navigation';
 import "../styles/globals.css";
 
 const { Header, Sider, Content } = Layout;
@@ -14,12 +14,12 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   const router = useRouter();
+  const pathname = usePathname();
 
   const menuItems = [
-    { key: '1', label: 'Devices' },
-    { key: '2', label: 'Mapa' },
-    { key: '3', label: 'Exportar dados' },
-    { key: '4', label: 'Placeholder 3' },
+    { key: '/', label: 'Devices' },
+    { key: '/map', label: 'Mapa' },
+    { key: '/export', label: 'Exportar dados' },
   ];
 
   return (
@@ -39,13 +39,11 @@ export default function RootLayout({
             <Sider width={200} style={{ background: 'var(--sidebar-background)' }}>
               <Menu
                 mode="inline"
-                defaultSelectedKeys={['1']}
+                selectedKeys={[pathname]}
                 className="sidebar-menu"
                 items={menuItems}
                 onClick={({ key }) => {
-                  if (key === '1') router.push('/');
-                  if (key === '3') router.push('/export');
-                  // Add more navigation logic here if needed
+                  router.push(key);
                 }}
               />
             </Sider>
