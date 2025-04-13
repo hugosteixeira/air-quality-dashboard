@@ -3,7 +3,6 @@ import * as echarts from 'echarts/core';
 import { CanvasRenderer } from 'echarts/renderers'; // Importa o renderizador necessário
 import { BarChart } from 'echarts/charts'; // Importa o tipo de gráfico usado
 import { TooltipComponent, GridComponent, TitleComponent, DataZoomComponent } from 'echarts/components'; // Importa os componentes necessários
-import { TooltipComponentOption } from 'echarts/components';
 import { Reading } from '../models/Reading';
 
 // Registra os módulos necessários
@@ -14,6 +13,11 @@ interface GraphProps {
   dataKey: keyof Reading;
   label: string;
   readingType: string;
+}
+
+interface TooltipParams {
+  value: number | string;
+  axisValue: string | number;
 }
 
 const Graph: React.FC<GraphProps> = ({ data, dataKey, label, readingType }) => {
@@ -35,7 +39,7 @@ const Graph: React.FC<GraphProps> = ({ data, dataKey, label, readingType }) => {
         },
         tooltip: {
           trigger: 'axis',
-          formatter: (params: TooltipComponentOption['formatterParams']) => {
+          formatter: (params: TooltipParams[]) => {
             const { value, axisValue } = params[0];
             const date = new Date(axisValue as string);
             return `${date.toLocaleString('pt-BR')}<br/>Valor: ${value}`;
