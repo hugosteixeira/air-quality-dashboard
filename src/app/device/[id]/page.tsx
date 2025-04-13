@@ -16,7 +16,9 @@ const { Title } = Typography;
 const { RangePicker } = DatePicker;
 
 const DeviceDetails: React.FC = () => {
-  const { id } = useParams();
+  const params = useParams() as { id: string }; // Tipagem explícita para garantir que `id` seja uma string
+  const { id } = params;
+
   const [graphReadings, setGraphReadings] = useState<Reading[]>([]);
   const [tableReadings, setTableReadings] = useState<Reading[]>([]);
   const [error, setError] = useState<string | null>(null);
@@ -48,7 +50,7 @@ const DeviceDetails: React.FC = () => {
   };
 
   const fetchGraphReadings = useCallback(async () => {
-    if (id && typeof id === 'string') {
+    if (id) {
       try {
         const { readings: readingsData } = await fetchReadings({
           deviceId: id,
@@ -57,7 +59,6 @@ const DeviceDetails: React.FC = () => {
           end_ts: graphDateRange ? graphDateRange[1] : undefined,
           limit: graphDateRange ? 0 : 30, // Limite de 30 inicialmente, sem limite ao selecionar datas
         });
-        console.log('Fetched Graph Readings:', readingsData); // Log fetched readings data
         setGraphReadings(readingsData);
       } catch (err) {
         if (err instanceof Error) {
@@ -70,7 +71,7 @@ const DeviceDetails: React.FC = () => {
   }, [id, graphFilter, graphDateRange]);
 
   const fetchTableReadings = useCallback(async () => {
-    if (id && typeof id === 'string') {
+    if (id) {
       try {
         const { readings: readingsData, total } = await fetchReadings({
           deviceId: id,
@@ -80,9 +81,7 @@ const DeviceDetails: React.FC = () => {
           skip: ((currentPage || 1) - 1) * 10,
           limit: 10,
         });
-        console.log('Fetched Table Readings:', readingsData); // Log fetched readings data
         setTableReadings(readingsData);
-        console.log("total", total); // Log total readings
         setTotalReadings(total);
       } catch (err) {
         if (err instanceof Error) {

@@ -15,7 +15,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   const router = useRouter();
-  const pathname = usePathname();
+  const pathname = usePathname() || '/'; // Garante que `pathname` seja uma string
 
   const menuItems = [
     { key: '/', label: 'Devices', icon: <HomeOutlined /> },
@@ -44,7 +44,7 @@ export default function RootLayout({
             </div>
             <Menu
               mode="inline"
-              selectedKeys={[pathname]}
+              selectedKeys={[pathname]} // `pathname` agora é garantido como string
               className="sidebar-menu"
               style={{
                 background: '#1a1a1a',
