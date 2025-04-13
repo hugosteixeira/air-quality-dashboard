@@ -47,34 +47,10 @@ const DeviceTable: React.FC<DeviceTableProps> = ({ devices, readings }) => {
       render: (text: string, record: Device) => readings[record.id]?.pm1 ?? 'N/A',
     },
     {
-      title: <span>PM10 AQICN <span className="table-unit"></span></span>,
-      dataIndex: 'pm10_aqicn',
-      key: 'pm10_aqicn',
-      render: (text: string, record: Device) => readings[record.id]?.pm10_aqicn ?? 'N/A',
-    },
-    {
-      title: <span>PM10 AQIUS <span className="table-unit"></span></span>,
-      dataIndex: 'pm10_aqius',
-      key: 'pm10_aqius',
-      render: (text: string, record: Device) => readings[record.id]?.pm10_aqius ?? 'N/A',
-    },
-    {
       title: <span>PM10 <span className="table-unit">(µg/m³)</span></span>,
       dataIndex: 'pm10_conc',
       key: 'pm10_conc',
       render: (text: string, record: Device) => readings[record.id]?.pm10_conc ?? 'N/A',
-    },
-    {
-      title: <span>PM25 AQICN <span className="table-unit"></span></span>,
-      dataIndex: 'pm25_aqicn',
-      key: 'pm25_aqicn',
-      render: (text: string, record: Device) => readings[record.id]?.pm25_aqicn ?? 'N/A',
-    },
-    {
-      title: <span>PM25 AQIUS <span className="table-unit"></span></span>,
-      dataIndex: 'pm25_aqius',
-      key: 'pm25_aqius',
-      render: (text: string, record: Device) => readings[record.id]?.pm25_aqius ?? 'N/A',
     },
     {
       title: <span>PM25 <span className="table-unit">(µg/m³)</span></span>,
@@ -109,6 +85,8 @@ const DeviceTable: React.FC<DeviceTableProps> = ({ devices, readings }) => {
       rowKey="id"
       size="small"
       pagination={false}
+      scroll={{ x: 'max-content' }}
+      style={{ width: '100%', maxWidth: '100%' }}
     />
   );
 };

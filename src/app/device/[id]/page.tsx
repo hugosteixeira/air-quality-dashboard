@@ -28,11 +28,11 @@ const DeviceDetails: React.FC = () => {
   const [totalReadings, setTotalReadings] = useState<number>(0);
 
   const handleGraphDateChange = (dates: (Dayjs | null)[] | null, dateStrings: [string, string]) => {
-    setGraphDateRange(dateStrings);
+    setGraphDateRange(dates && dates.length === 2 ? dateStrings : null);
   };
 
   const handleTableDateChange = (dates: (Dayjs | null)[] | null, dateStrings: [string, string]) => {
-    setTableDateRange(dateStrings);
+    setTableDateRange(dates && dates.length === 2 ? dateStrings : null);
   };
 
   const handleGraphFilterChange = (value: string) => {
@@ -49,57 +49,48 @@ const DeviceDetails: React.FC = () => {
 
   const fetchGraphReadings = useCallback(async () => {
     if (id && typeof id === 'string') {
-      const getData = async () => {
-        try {
-          const { readings: readingsData } = await fetchReadings({
-            deviceId: id,
-            reading_type: graphFilter,
-            start_ts: graphDateRange ? graphDateRange[0] : undefined,
-            end_ts: graphDateRange ? graphDateRange[1] : undefined,
-            skip: 0,
-            limit: 30, // Fetch 30 records for the graph data
-          });
-          console.log('Fetched Graph Readings:', readingsData); // Log fetched readings data
-          setGraphReadings(readingsData);
-        } catch (err) {
-          if (err instanceof Error) {
-            setError(err.message);
-          } else {
-            setError('An unknown error occurred');
-          }
+      try {
+        const { readings: readingsData } = await fetchReadings({
+          deviceId: id,
+          reading_type: graphFilter,
+          start_ts: graphDateRange ? graphDateRange[0] : undefined,
+          end_ts: graphDateRange ? graphDateRange[1] : undefined,
+          limit: graphDateRange ? 0 : 30, // Limite de 30 inicialmente, sem limite ao selecionar datas
+        });
+        console.log('Fetched Graph Readings:', readingsData); // Log fetched readings data
+        setGraphReadings(readingsData);
+      } catch (err) {
+        if (err instanceof Error) {
+          setError(err.message);
+        } else {
+          setError('An unknown error occurred');
         }
-      };
-
-      getData();
+      }
     }
   }, [id, graphFilter, graphDateRange]);
 
   const fetchTableReadings = useCallback(async () => {
     if (id && typeof id === 'string') {
-      const getData = async () => {
-        try {
-          const { readings: readingsData, total } = await fetchReadings({
-            deviceId: id,
-            reading_type: tableFilter,
-            start_ts: tableDateRange ? tableDateRange[0] : undefined,
-            end_ts: tableDateRange ? tableDateRange[1] : undefined,
-            skip: ((currentPage || 1) - 1) * 10,
-            limit: 10,
-          });
-          console.log('Fetched Table Readings:', readingsData); // Log fetched readings data
-          setTableReadings(readingsData);
-          console.log("total", total); // Log total readings
-          setTotalReadings(total);
-        } catch (err) {
-          if (err instanceof Error) {
-            setError(err.message);
-          } else {
-            setError('An unknown error occurred');
-          }
+      try {
+        const { readings: readingsData, total } = await fetchReadings({
+          deviceId: id,
+          reading_type: tableFilter,
+          start_ts: tableDateRange ? tableDateRange[0] : undefined,
+          end_ts: tableDateRange ? tableDateRange[1] : undefined,
+          skip: ((currentPage || 1) - 1) * 10,
+          limit: 10,
+        });
+        console.log('Fetched Table Readings:', readingsData); // Log fetched readings data
+        setTableReadings(readingsData);
+        console.log("total", total); // Log total readings
+        setTotalReadings(total);
+      } catch (err) {
+        if (err instanceof Error) {
+          setError(err.message);
+        } else {
+          setError('An unknown error occurred');
         }
-      };
-
-      getData();
+      }
     }
   }, [id, tableFilter, tableDateRange, currentPage]);
 
@@ -122,7 +113,11 @@ const DeviceDetails: React.FC = () => {
       children: (
         <>
           <div className="flex gap-4 justify-end w-full" style={{ width: '1200px' }}>
-            <RangePicker onChange={handleGraphDateChange} style={{ marginBottom: 16 }} />
+            <RangePicker
+              onChange={handleGraphDateChange}
+              style={{ marginBottom: 16 }}
+              allowClear
+            />
             <Select
               placeholder="Filtrar por Tipo de Leitura"
               value={graphFilter}
@@ -144,7 +139,11 @@ const DeviceDetails: React.FC = () => {
       children: (
         <>
           <div className="flex gap-4 justify-end w-full" style={{ maxWidth: '1200px' }}>
-            <RangePicker onChange={handleTableDateChange} style={{ marginBottom: 16 }} />
+            <RangePicker
+              onChange={handleTableDateChange}
+              style={{ marginBottom: 16 }}
+              allowClear
+            />
             <Select
               placeholder="Filtrar por Tipo de Leitura"
               value={tableFilter}

@@ -33,29 +33,9 @@ const DataTable: React.FC<DataTableProps> = ({ data, currentPage, totalReadings,
       key: 'pm1',
     },
     {
-      title: <span>PM10 AQICN <span className="table-unit"></span></span>,
-      dataIndex: 'pm10_aqicn',
-      key: 'pm10_aqicn',
-    },
-    {
-      title: <span>PM10 AQIUS <span className="table-unit"></span></span>,
-      dataIndex: 'pm10_aqius',
-      key: 'pm10_aqius',
-    },
-    {
       title: <span>PM10 <span className="table-unit">(µg/m³)</span></span>,
       dataIndex: 'pm10_conc',
       key: 'pm10_conc',
-    },
-    {
-      title: <span>PM25 AQICN <span className="table-unit"></span></span>,
-      dataIndex: 'pm25_aqicn',
-      key: 'pm25_aqicn',
-    },
-    {
-      title: <span>PM25 AQIUS <span className="table-unit"></span></span>,
-      dataIndex: 'pm25_aqius',
-      key: 'pm25_aqius',
     },
     {
       title: <span>PM25 <span className="table-unit">(µg/m³)</span></span>,
@@ -87,7 +67,8 @@ const DataTable: React.FC<DataTableProps> = ({ data, currentPage, totalReadings,
         onChange: onPageChange,
         showSizeChanger: false,
       }}
-      style={{ width: '100%', maxWidth: '1200px' }}
+      scroll={{ x: 'max-content' }}
+      style={{ width: '100%', maxWidth: '100%' }}
     />
   );
 };

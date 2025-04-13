@@ -1,3 +1,5 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap');
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
@@ -25,10 +27,23 @@
   --graph-unit-color: #666;
 }
 
+html, body {
+  height: 100%; /* Garante que ocupem toda a altura da viewport */
+  margin: 0; /* Remove margens padrão */
+  padding: 0; /* Remove paddings padrão */
+  background: var(--background); /* Aplica o fundo padrão da aplicação */
+  overflow-x: hidden; /* Evita scroll horizontal indesejado */
+}
+
+#root, #__next {
+  height: 100%; /* Garante que o contêiner principal ocupe toda a altura */
+}
+
 body {
   color: var(--foreground);
   background: var(--background);
   font-family: Arial, Helvetica, sans-serif;
+  @apply font-sans;
 }
 
 .header-title {
@@ -44,7 +59,25 @@ body {
   color: var(--sidebar-color);
 }
 
+.sidebar-menu .ant-menu-item {
+  background-color: #1a1a1a; /* Fundo escuro para o estado "rest" */
+  color: #ffffff; /* Texto claro */
+  transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+.sidebar-menu .ant-menu-item:hover {
+  background-color: #333333 !important; /* Fundo consistente no estado "hover" */
+  color: #e0e0e0 !important; /* Texto levemente mais claro no estado "hover" */
+}
+
+.sidebar-menu .ant-menu-item-selected {
+  background-color: #444444 !important; /* Fundo consistente no estado "selected" */
+  color: #ffffff !important; /* Texto claro no estado "selected" */
+  font-weight: bold; /* Destacar o item selecionado */
+}
+
 .content {
+  flex: 1; /* Faz o conteúdo ocupar o espaço restante */
   padding: var(--content-padding);
   margin: var(--content-margin);
   min-height: var(--content-min-height);
@@ -140,4 +173,18 @@ body {
   border: 1px solid var(--graph-border); /* Add border to cells */
   vertical-align: top;
   text-align: center; /* Center align text */
+}
+
+.layout {
+  min-height: 100vh; /* Garante que o layout ocupe toda a altura da viewport */
+  display: flex; /* Garante que o layout seja flexível */
+  flex-direction: column; /* Organiza os filhos em coluna */
+  background: var(--background); /* Aplica o fundo padrão da aplicação */
+}
+
+/* Responsive design for tables */
+@media (max-width: 768px) {
+  .ant-table {
+    max-width: 50%; /* Adjust max width to fit the device screen */
+  }
 }

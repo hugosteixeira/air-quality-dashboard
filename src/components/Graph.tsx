@@ -1,5 +1,5 @@
-import React from 'react';
-import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from 'recharts';
+import React, { useEffect, useRef } from 'react';
+import * as echarts from 'echarts';
 import { Reading } from '../models/Reading';
 
 interface GraphProps {
@@ -10,60 +10,77 @@ interface GraphProps {
 }
 
 const Graph: React.FC<GraphProps> = ({ data, dataKey, label, readingType }) => {
-  const dataWithUniqueKeys = data.map((item, index) => ({ ...item, uniqueKey: `${dataKey}-${index}` }));
+  const chartRef = useRef<HTMLDivElement>(null);
 
-  const formatXAxis = (tickItem: string) => {
-    const date = new Date(tickItem);
-    if (readingType === 'daily') {
-      return date.toLocaleDateString('pt-BR', {
-        day: '2-digit',
-        month: '2-digit',
-      });
-    } else {
-      return date.toLocaleTimeString('pt-BR', {
-        hour: '2-digit',
-        minute: '2-digit',
-      });
+  useEffect(() => {
+    if (chartRef.current) {
+      const chart = echarts.init(chartRef.current);
+
+      const formattedData = data.map((item) => ({
+        value: item[dataKey] ?? 0,
+        timestamp: item.ts,
+      }));
+
+      const option = {
+        title: {
+          text: label,
+          left: 'center',
+        },
+        tooltip: {
+          trigger: 'axis',
+          formatter: (params: any) => {
+            const { value, axisValue } = params[0];
+            const date = new Date(axisValue);
+            return `${date.toLocaleString('pt-BR')}<br/>Valor: ${value}`;
+          },
+        },
+        xAxis: {
+          type: 'category',
+          data: formattedData.map((item) => item.timestamp),
+          axisLabel: {
+            formatter: (value: string) => {
+              const date = new Date(value);
+              return readingType === 'daily'
+                ? date.toLocaleDateString('pt-BR', { day: '2-digit', month: '2-digit' })
+                : date.toLocaleTimeString('pt-BR', { hour: '2-digit', minute: '2-digit' });
+            },
+          },
+        },
+        yAxis: {
+          type: 'value',
+        },
+        dataZoom: [
+          {
+            type: 'slider',
+            start: 0,
+            end: 100,
+          },
+          {
+            type: 'inside',
+            start: 0,
+            end: 100,
+          },
+        ],
+        series: [
+          {
+            type: 'bar',
+            data: formattedData.map((item) => item.value),
+            itemStyle: {
+              color: '#82ca9d',
+            },
+          },
+        ],
+      };
+
+      chart.setOption(option);
+
+      return () => {
+        chart.dispose();
+      };
     }
-  };
+  }, [data, dataKey, label, readingType]);
 
-  const formatTooltipLabel = (label: string) => {
-    const date = new Date(label);
-    return date.toLocaleString('pt-BR', {
-      day: '2-digit',
-      month: '2-digit',
-      year: '2-digit',
-      hour: '2-digit',
-      minute: '2-digit',
-      second: '2-digit',
-    });
-  };
-
-  const minValue = Math.min(...data.map(item => item[dataKey] as number));
-  const maxValue = Math.max(...data.map(item => item[dataKey] as number));
-  const avgValue = (data.reduce((sum, item) => sum + (item[dataKey] as number), 0) / data.length).toFixed(2);
-
-  return (
-    <div className="graph-card">
-      <div className="graph-info">
-        <p><strong>Propriedade:</strong> {label}</p>
-        <p><strong>Mínimo:</strong> {minValue}</p>
-        <p><strong>Máximo:</strong> {maxValue}</p>
-        <p><strong>Média:</strong> {avgValue}</p>
-      </div>
-      <div className="graph-container">
-        <ResponsiveContainer width="100%" height={140}>
-          <BarChart data={dataWithUniqueKeys}>
-            <CartesianGrid strokeDasharray="3 3" />
-            <XAxis dataKey="ts" tickFormatter={formatXAxis} />
-            <YAxis />
-            <Tooltip labelFormatter={formatTooltipLabel} />
-            <Bar dataKey={dataKey} fill="#82ca9d" />
-          </BarChart>
-        </ResponsiveContainer>
-      </div>
-    </div>
-  );
+  return <div ref={chartRef} style={{ width: '100%', height: '400px' }} />;
 };
 
 export default Graph;
