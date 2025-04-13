@@ -1,6 +1,13 @@
 import React, { useEffect, useRef } from 'react';
-import * as echarts from 'echarts';
+import * as echarts from 'echarts/core';
+import { CanvasRenderer } from 'echarts/renderers'; // Importa o renderizador necessário
+import { BarChart } from 'echarts/charts'; // Importa o tipo de gráfico usado
+import { TooltipComponent, GridComponent, TitleComponent, DataZoomComponent } from 'echarts/components'; // Importa os componentes necessários
+import { TooltipComponentOption } from 'echarts/components';
 import { Reading } from '../models/Reading';
+
+// Registra os módulos necessários
+echarts.use([CanvasRenderer, BarChart, TooltipComponent, GridComponent, TitleComponent, DataZoomComponent]);
 
 interface GraphProps {
   data: Reading[];
@@ -11,6 +18,13 @@ interface GraphProps {
 
 const Graph: React.FC<GraphProps> = ({ data, dataKey, label, readingType }) => {
   const chartRef = useRef<HTMLDivElement>(null);
+
+  const processData = (data: { [key: string]: number }[]) => {
+    return data.map(item => ({
+      x: item.timestamp,
+      y: item.value,
+    }));
+  };
 
   useEffect(() => {
     if (chartRef.current) {
@@ -28,9 +42,9 @@ const Graph: React.FC<GraphProps> = ({ data, dataKey, label, readingType }) => {
         },
         tooltip: {
           trigger: 'axis',
-          formatter: (params: any) => {
+          formatter: (params: TooltipComponentOption['formatterParams']) => {
             const { value, axisValue } = params[0];
-            const date = new Date(axisValue);
+            const date = new Date(axisValue as string);
             return `${date.toLocaleString('pt-BR')}<br/>Valor: ${value}`;
           },
         },

@@ -71,8 +71,15 @@ const Dashboard: React.FC = () => {
 
   return (
     <div
-      className="flex flex-col gap-8 items-center sm:items-center flex-1 w-full"
-      style={{ maxWidth: '1200px', minHeight: '100vh', display: 'flex' }} // Certifique-se de que o display seja flex
+      className="flex flex-col gap-8 items-center sm:items-center flex-1"
+      style={{
+        maxWidth: 'calc(100vw - 250px)', // Subtraia a largura da sidebar (ajuste conforme necessário)
+        minHeight: '100vh',
+        marginLeft: '250px', // Adicione margem para compensar a sidebar
+        display: 'flex',
+        justifyContent: 'center', // Centraliza os cards horizontalmente
+        alignItems: 'center',    // Centraliza os cards verticalmente
+      }}
     >
       <Title level={2}>Dispositivos</Title>
       <div className="w-full flex justify-end">
