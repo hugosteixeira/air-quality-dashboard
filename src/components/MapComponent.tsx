@@ -1,5 +1,6 @@
 import React, { useEffect, useRef, useState } from 'react';
 import 'leaflet/dist/leaflet.css';
+import { Map } from 'leaflet'; // Importa o tipo Map do Leaflet
 import { Device } from '../models/Device';
 import { Reading } from '../models/Reading';
 
@@ -10,7 +11,7 @@ interface MapComponentProps {
 
 const MapComponent: React.FC<MapComponentProps> = ({ devices, readings }) => {
   const mapRef = useRef<HTMLDivElement>(null);
-  const mapInstanceRef = useRef<any>(null); // Armazena a instância do mapa
+  const mapInstanceRef = useRef<Map | null>(null); // Substitui `any` por `Map | null`
   const [selectedValue, setSelectedValue] = useState<'co2' | 'tp' | 'hm'>('co2'); // Valor selecionado para exibição
 
   useEffect(() => {
