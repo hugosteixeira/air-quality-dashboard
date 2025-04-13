@@ -19,13 +19,6 @@ interface GraphProps {
 const Graph: React.FC<GraphProps> = ({ data, dataKey, label, readingType }) => {
   const chartRef = useRef<HTMLDivElement>(null);
 
-  const processData = (data: { [key: string]: number }[]) => {
-    return data.map(item => ({
-      x: item.timestamp,
-      y: item.value,
-    }));
-  };
-
   useEffect(() => {
     if (chartRef.current) {
       const chart = echarts.init(chartRef.current);
