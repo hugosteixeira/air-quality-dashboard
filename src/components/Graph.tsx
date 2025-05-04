@@ -1,11 +1,10 @@
 import React, { useEffect, useRef } from 'react';
 import * as echarts from 'echarts/core';
-import { CanvasRenderer } from 'echarts/renderers'; // Importa o renderizador necessário
-import { BarChart } from 'echarts/charts'; // Importa o tipo de gráfico usado
-import { TooltipComponent, GridComponent, TitleComponent, DataZoomComponent } from 'echarts/components'; // Importa os componentes necessários
+import { CanvasRenderer } from 'echarts/renderers';
+import { BarChart } from 'echarts/charts';
+import { TooltipComponent, GridComponent, TitleComponent, DataZoomComponent } from 'echarts/components';
 import { Reading } from '../models/Reading';
 
-// Registra os módulos necessários
 echarts.use([CanvasRenderer, BarChart, TooltipComponent, GridComponent, TitleComponent, DataZoomComponent]);
 
 interface GraphProps {

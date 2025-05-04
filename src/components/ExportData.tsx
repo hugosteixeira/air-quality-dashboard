@@ -43,9 +43,8 @@ const ExportData: React.FC = () => {
         reading_type: readingType,
         start_ts: dateRange ? dateRange[0] : undefined,
         end_ts: dateRange ? dateRange[1] : undefined,
-        limit: 0, // Set limit to 0 to return all data
+        limit: 0,
       });
-      console.log('Fetched Readings:', readings); // Log fetched readings data
       setExportData(readings);
       exportToCSV(readings);
     } catch (error) {
@@ -112,7 +111,6 @@ const ExportData: React.FC = () => {
             Exportar
           </Button>
         </div>
-        {/* Display export data or a message */}
         {exportData.length > 0 && (
           <div>
             <p>Dados exportados com sucesso!</p>

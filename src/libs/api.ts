@@ -2,8 +2,8 @@ import axios from 'axios';
 import { Device } from '../models/Device';
 import { Reading } from '../models/Reading';
 
-console.log('Environment Variables:', process.env); // Add this line to log all environment variables
-const API_BASE_URL = "https://air-quality-api-zlqt.onrender.com"; // Change this line to use the correct API base URL
+console.log('Environment Variables:', process.env); 
+const API_BASE_URL = "https://air-quality-api-zlqt.onrender.com"; 
 
 export const fetchDevices = async (): Promise<Device[]> => {
   try {
@@ -30,7 +30,7 @@ export const fetchReadings = async (filters: { reading_type?: string; deviceId?:
 
     const url = `${API_BASE_URL}/readings`;
     const response = await axios.get(url, { params });
-    console.log('Fetched Readings:', response.data); // Log the response data to inspect the structure
+    console.log('Fetched Readings:', response.data); 
     return { readings: response.data.readings, total: response.data.total_count };
   } catch (error) {
     console.error('Error fetching readings:', error);

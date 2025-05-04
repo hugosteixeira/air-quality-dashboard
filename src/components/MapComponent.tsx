@@ -1,55 +1,50 @@
 import React, { useEffect, useRef, useState } from 'react';
 import 'leaflet/dist/leaflet.css';
-import { Map } from 'leaflet'; // Importa o tipo Map do Leaflet
+import { Map } from 'leaflet';
 import { Device } from '../models/Device';
 import { Reading } from '../models/Reading';
 
 interface MapComponentProps {
   devices: Device[];
-  readings: { [key: string]: Reading }; // Mapeia o ID do dispositivo para sua última leitura
+  readings: { [key: string]: Reading };
 }
 
 const MapComponent: React.FC<MapComponentProps> = ({ devices, readings }) => {
   const mapRef = useRef<HTMLDivElement>(null);
-  const mapInstanceRef = useRef<Map | null>(null); // Substitui `any` por `Map | null`
-  const [selectedValue, setSelectedValue] = useState<'co2' | 'tp' | 'hm'>('co2'); // Valor selecionado para exibição
+  const mapInstanceRef = useRef<Map | null>(null);
+  const [selectedValue, setSelectedValue] = useState<'co2' | 'tp' | 'hm'>('co2');
 
   useEffect(() => {
     if (mapRef.current) {
       import('leaflet').then(L => {
-        // Verifica se o mapa já foi inicializado
         if (mapInstanceRef.current) {
-          mapInstanceRef.current.remove(); // Remove o mapa existente
+          mapInstanceRef.current.remove();
         }
 
-        // Inicializa o mapa
-        const map = L.map(mapRef.current!).setView([-8.0476, -34.877], 12); // Centraliza em Recife
+        const map = L.map(mapRef.current!).setView([-8.0476, -34.877], 12);
         L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
           attribution: '&copy; OpenStreetMap contributors',
         }).addTo(map);
 
-        // Adiciona marcadores personalizados para cada dispositivo
         devices.forEach(device => {
           const reading = readings[device.id];
-          const value = reading?.[selectedValue] ?? 'N/A'; // Valor selecionado ou 'N/A' se não houver leitura
+          const value = reading?.[selectedValue] ?? 'N/A';
 
           if (device.latitude && device.longitude) {
-            // Define a cor do marcador e do texto com base no valor
             const getTheme = (val: number | string) => {
               if (typeof val !== 'number') {
-                return { background: 'gray', text: 'white' }; // Cor padrão para valores inválidos
+                return { background: 'gray', text: 'white' };
               }
               if (selectedValue === 'co2') {
-                if (val <= 400) return { background: 'green', text: 'white' }; // Bom
-                if (val <= 1000) return { background: 'yellow', text: 'black' }; // Moderado
-                return { background: 'red', text: 'white' }; // Ruim
+                if (val <= 400) return { background: 'green', text: 'white' };
+                if (val <= 1000) return { background: 'yellow', text: 'black' };
+                return { background: 'red', text: 'white' };
               }
-              return { background: 'blue', text: 'white' }; // Padrão para outros valores
+              return { background: 'blue', text: 'white' };
             };
 
             const { background, text } = getTheme(value);
 
-            // Cria um ícone personalizado
             const customIcon = L.divIcon({
               className: 'custom-marker',
               html: `
@@ -69,11 +64,10 @@ const MapComponent: React.FC<MapComponentProps> = ({ devices, readings }) => {
                   ${value}
                 </div>
               `,
-              iconSize: [40, 40], // Tamanho do ícone
-              iconAnchor: [20, 20], // Posição do ícone
+              iconSize: [40, 40],
+              iconAnchor: [20, 20],
             });
 
-            // Adiciona o marcador ao mapa
             L.marker([device.latitude, device.longitude], { icon: customIcon }).addTo(map)
               .bindPopup(`
                 <strong>${device.name}</strong><br />
@@ -82,12 +76,10 @@ const MapComponent: React.FC<MapComponentProps> = ({ devices, readings }) => {
           }
         });
 
-        // Armazena a instância do mapa
         mapInstanceRef.current = map;
       });
     }
 
-    // Cleanup: Remove o mapa ao desmontar o componente
     return () => {
       if (mapInstanceRef.current) {
         mapInstanceRef.current.remove();
@@ -98,12 +90,11 @@ const MapComponent: React.FC<MapComponentProps> = ({ devices, readings }) => {
 
   return (
     <div style={{ position: 'relative', width: '100%', height: '100%' }}>
-      {/* Menu flutuante */}
       <div
         style={{
           position: 'absolute',
           top: '10px',
-          right: '10px', // Alterado de 'left' para 'right' para mover para o canto superior direito
+          right: '10px',
           background: 'white',
           padding: '10px',
           borderRadius: '8px',
@@ -120,13 +111,14 @@ const MapComponent: React.FC<MapComponentProps> = ({ devices, readings }) => {
           onChange={(e) => setSelectedValue(e.target.value as 'co2' | 'tp' | 'hm')}
           style={{ padding: '5px', borderRadius: '4px', border: '1px solid #ccc' }}
         >
-          <option value="co2">CO₂</option>
+          <option
+value="co2">CO₂</option>
           <option value="tp">Temperatura</option>
+
           <option value="hm">Umidade</option>
         </select>
       </div>
 
-      {/* Mapa */}
       <div ref={mapRef} style={{ width: '100%', height: '100%' }} />
     </div>
   );

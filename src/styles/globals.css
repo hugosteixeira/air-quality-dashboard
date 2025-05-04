@@ -28,15 +28,15 @@
 }
 
 html, body {
-  height: 100%; /* Garante que ocupem toda a altura da viewport */
-  margin: 0; /* Remove margens padrão */
-  padding: 0; /* Remove paddings padrão */
-  background: var(--background); /* Aplica o fundo padrão da aplicação */
-  overflow-x: hidden; /* Evita scroll horizontal indesejado */
+  height: 100%;
+  margin: 0;
+  padding: 0;
+  background: var(--background);
+  overflow-x: hidden;
 }
 
 #root, #__next {
-  height: 100%; /* Garante que o contêiner principal ocupe toda a altura */
+  height: 100%;
 }
 
 body {
@@ -60,24 +60,24 @@ body {
 }
 
 .sidebar-menu .ant-menu-item {
-  background-color: #1a1a1a; /* Fundo escuro para o estado "rest" */
-  color: #ffffff; /* Texto claro */
+  background-color: #1a1a1a;
+  color: #ffffff;
   transition: background-color 0.3s ease, color 0.3s ease;
 }
 
 .sidebar-menu .ant-menu-item:hover {
-  background-color: #333333 !important; /* Fundo consistente no estado "hover" */
-  color: #e0e0e0 !important; /* Texto levemente mais claro no estado "hover" */
+  background-color: #333333 !important;
+  color: #e0e0e0 !important;
 }
 
 .sidebar-menu .ant-menu-item-selected {
-  background-color: #444444 !important; /* Fundo consistente no estado "selected" */
-  color: #ffffff !important; /* Texto claro no estado "selected" */
-  font-weight: bold; /* Destacar o item selecionado */
+  background-color: #444444 !important;
+  color: #ffffff !important;
+  font-weight: bold;
 }
 
 .content {
-  flex: 1; /* Faz o conteúdo ocupar o espaço restante */
+  flex: 1;
   padding: var(--content-padding);
   margin: var(--content-margin);
   min-height: var(--content-min-height);
@@ -100,11 +100,11 @@ body {
   justify-content: space-between;
   background: var(--graph-background);
   border: 1px solid var(--graph-border);
-  border-radius: 0; /* Remove border-radius to merge cards */
+  border-radius: 0;
   padding: 16px;
   width: 100%;
-  height: 140px; /* Decrease height by 30% */
-  box-shadow: none; /* Remove box-shadow to merge cards */
+  height: 140px;
+  box-shadow: none;
 }
 
 .graph-info {
@@ -153,7 +153,7 @@ body {
 .graphs-table {
   display: table;
   width: 100%;
-  border-collapse: collapse; /* Ensure borders collapse */
+  border-collapse: collapse;
 }
 
 .graphs-table-header-row {
@@ -169,22 +169,21 @@ body {
 
 .graphs-table-cell {
   display: table-cell;
-  padding: 0; /* Remove padding to merge cells */
-  border: 1px solid var(--graph-border); /* Add border to cells */
+  padding: 0;
+  border: 1px solid var(--graph-border);
   vertical-align: top;
-  text-align: center; /* Center align text */
+  text-align: center;
 }
 
 .layout {
-  min-height: 100vh; /* Garante que o layout ocupe toda a altura da viewport */
-  display: flex; /* Garante que o layout seja flexível */
-  flex-direction: column; /* Organiza os filhos em coluna */
-  background: var(--background); /* Aplica o fundo padrão da aplicação */
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  background: var(--background);
 }
 
-/* Responsive design for tables */
 @media (max-width: 768px) {
   .ant-table {
-    max-width: 50%; /* Adjust max width to fit the device screen */
+    max-width: 50%;
   }
 }

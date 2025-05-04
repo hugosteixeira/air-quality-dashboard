@@ -16,7 +16,7 @@ const { Title } = Typography;
 const { RangePicker } = DatePicker;
 
 const DeviceDetails: React.FC = () => {
-  const params = useParams() as { id: string }; // Tipagem explícita para garantir que `id` seja uma string
+  const params = useParams() as { id: string };
   const { id } = params;
 
   const [graphReadings, setGraphReadings] = useState<Reading[]>([]);
@@ -57,7 +57,7 @@ const DeviceDetails: React.FC = () => {
           reading_type: graphFilter,
           start_ts: graphDateRange ? graphDateRange[0] : undefined,
           end_ts: graphDateRange ? graphDateRange[1] : undefined,
-          limit: graphDateRange ? 0 : 30, // Limite de 30 inicialmente, sem limite ao selecionar datas
+          limit: graphDateRange ? 0 : 30,
         });
         setGraphReadings(readingsData);
       } catch (err) {
