@@ -18,11 +18,13 @@ const MapPage: React.FC = () => {
       setDevices(devicesData);
 
       const readingsData = await Promise.all(
-        devicesData.map(device => fetchLatestInstantReadings(device.id))
+        devicesData.map(device => fetchLatestInstantReadings([device.id]))
       );
 
-      const readingsMap = readingsData.reduce((acc, reading) => {
-        acc[reading.device_id] = reading;
+      const readingsMap = readingsData.reduce((acc, readingArray) => {
+        readingArray.forEach(reading => {
+          acc[reading.device_id] = reading;
+        });
         return acc;
       }, {} as { [key: string]: Reading });
 
@@ -32,8 +34,17 @@ const MapPage: React.FC = () => {
     fetchData();
   }, []);
 
+  useEffect(() => {
+    // Ensure the map container is styled properly
+    const mapContainer = document.getElementById('map-container');
+    if (mapContainer) {
+      mapContainer.style.height = '100%';
+      mapContainer.style.width = '100%';
+    }
+  }, []);
+
   return (
-    <div style={{ flex: 1, height: '100vh' }}>
+    <div id="map-container" style={{ flex: 1, height: '100vh' }}>
       <MapComponent devices={devices} readings={readings} />
     </div>
   );

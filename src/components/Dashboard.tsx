@@ -26,11 +26,14 @@ const Dashboard: React.FC = () => {
         setFilteredDevices(devicesData);
 
         const readingsData = await Promise.all(
-          devicesData.map(device => fetchLatestInstantReadings(device.id))
+          devicesData.map(device => fetchLatestInstantReadings([device.id]))
         );
 
-        const readingsMap = readingsData.reduce((acc, reading) => {
-          acc[reading.device_id] = reading;
+        const readingsMap = readingsData.reduce((acc, readingArray) => {
+          const latestReading = readingArray[0]; // Assuming the first element is the latest reading
+          if (latestReading) {
+            acc[latestReading.device_id] = latestReading;
+          }
           return acc;
         }, {} as { [key: string]: Reading });
 

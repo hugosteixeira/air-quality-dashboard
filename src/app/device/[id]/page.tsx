@@ -53,7 +53,7 @@ const DeviceDetails: React.FC = () => {
     if (id) {
       try {
         const { readings: readingsData } = await fetchReadings({
-          deviceId: id,
+          deviceIds: [id],
           reading_type: graphFilter,
           start_ts: graphDateRange ? graphDateRange[0] : undefined,
           end_ts: graphDateRange ? graphDateRange[1] : undefined,
@@ -74,7 +74,7 @@ const DeviceDetails: React.FC = () => {
     if (id) {
       try {
         const { readings: readingsData, total } = await fetchReadings({
-          deviceId: id,
+          deviceIds: [id],
           reading_type: tableFilter,
           start_ts: tableDateRange ? tableDateRange[0] : undefined,
           end_ts: tableDateRange ? tableDateRange[1] : undefined,

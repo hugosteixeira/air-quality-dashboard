@@ -4,7 +4,7 @@ import Head from 'next/head';
 import { Layout, Menu, Typography } from 'antd';
 import { useRouter, usePathname } from 'next/navigation';
 import "../styles/globals.css";
-import { HomeOutlined, EnvironmentOutlined, ExportOutlined } from '@ant-design/icons';
+import { HomeOutlined, EnvironmentOutlined, ExportOutlined, BarChartOutlined } from '@ant-design/icons';
 
 const { Sider, Content } = Layout;
 const { Title } = Typography;
@@ -21,16 +21,16 @@ export default function RootLayout({
     { key: '/', label: 'Devices', icon: <HomeOutlined /> },
     { key: '/map', label: 'Mapa', icon: <EnvironmentOutlined /> },
     { key: '/export', label: 'Exportar dados', icon: <ExportOutlined /> },
+    { key: '/devices-graph', label: 'Gráficos', icon: <BarChartOutlined /> }, // Correctly linked menu item
   ];
 
   return (
     <html lang="pt-BR">
       <Head>
         <title>Aplicativo de Qualidade do Ar</title>
-        <meta name="description" content="Gerado pelo aplicativo de criação" />
       </Head>
-      <body>
-        <Layout className="layout" style={{ minHeight: '100vh' }}>
+      <body style={{ margin: 0, padding: 0 }}>
+        <Layout style={{ minHeight: '100vh' }}>
           <Sider
             width={200}
             className="bg-zinc-900"
@@ -57,7 +57,7 @@ export default function RootLayout({
             />
           </Sider>
           <Layout>
-            <Content className="content" style={{ minHeight: '100vh' }}>
+            <Content className="content">
               {children}
             </Content>
           </Layout>

@@ -27,15 +27,18 @@
   --graph-unit-color: #666;
 }
 
-html, body {
+html,
+body {
   height: 100%;
   margin: 0;
   padding: 0;
   background: var(--background);
   overflow-x: hidden;
+  box-sizing: border-box;
 }
 
-#root, #__next {
+#root,
+#__next {
   height: 100%;
 }
 
@@ -46,13 +49,16 @@ body {
   @apply font-sans;
 }
 
+* {
+  box-sizing: border-box;
+}
+
 .header-title {
   color: var(--header-title-color);
   margin: var(--header-title-margin);
 }
 
 .sidebar-menu {
-  height: 100%;
   border-right: 0;
   font-family: var(--sidebar-font-family);
   font-weight: var(--sidebar-font-weight);

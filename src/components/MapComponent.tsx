@@ -68,10 +68,13 @@ const MapComponent: React.FC<MapComponentProps> = ({ devices, readings }) => {
               iconAnchor: [20, 20],
             });
 
+            const dateTime = reading ? new Date(reading.ts).toLocaleString() : 'N/A';
+
             L.marker([device.latitude, device.longitude], { icon: customIcon }).addTo(map)
               .bindPopup(`
                 <strong>${device.name}</strong><br />
-                ${selectedValue.toUpperCase()}: ${value}
+                ${selectedValue.toUpperCase()}: ${value}<br />
+                <strong>Date/Time:</strong> ${dateTime}
               `);
           }
         });
@@ -112,7 +115,7 @@ const MapComponent: React.FC<MapComponentProps> = ({ devices, readings }) => {
           style={{ padding: '5px', borderRadius: '4px', border: '1px solid #ccc' }}
         >
           <option
-value="co2">CO₂</option>
+            value="co2">CO₂</option>
           <option value="tp">Temperatura</option>
 
           <option value="hm">Umidade</option>

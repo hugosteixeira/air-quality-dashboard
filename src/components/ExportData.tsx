@@ -39,7 +39,7 @@ const ExportData: React.FC = () => {
   const handleExport = async () => {
     try {
       const { readings } = await fetchReadings({
-        deviceId: selectedDevice,
+        deviceIds: selectedDevice ? [selectedDevice] : undefined,
         reading_type: readingType,
         start_ts: dateRange ? dateRange[0] : undefined,
         end_ts: dateRange ? dateRange[1] : undefined,
