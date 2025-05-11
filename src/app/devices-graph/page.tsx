@@ -150,7 +150,7 @@ const DevicesGraphPage: React.FC = () => {
           </Space>
         </div>
       </div>
-      <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', verticalAlign: 'center', minHeight: '400px' }}>
+      <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', minHeight: '500px', height: '70vh' }}>
         {graphData.length > 0 ? (
           <MultiLineGraph
             data={graphData} // Pass multi-line data to the graph

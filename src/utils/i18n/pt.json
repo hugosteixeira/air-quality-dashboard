@@ -24,5 +24,7 @@
     "unknown_error": "Ocorreu um erro desconhecido",
     "no_data": "Nenhum dado disponível para os dispositivos e propriedade selecionados.",
     "reading_date": "Data da Leitura",
-    "not_available": "Não Disponível"
+    "not_available": "Não Disponível",
+    "start_date": "Data de Início",
+    "end_date": "Data de Fim"
 }

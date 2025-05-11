@@ -112,17 +112,21 @@ const DeviceDetails: React.FC = () => {
       label: getTranslation('graphs_tab'),
       children: (
         <>
-          <div className="flex gap-4 justify-end w-full" style={{ width: '1200px' }}>
+          <div className="flex flex-wrap gap-4 justify-end w-full" style={{ maxWidth: '100%' }}>
             <RangePicker
               onChange={handleGraphDateChange}
-              style={{ marginBottom: 16 }}
+              style={{ marginBottom: 16, width: '300px', maxWidth: '100%' }}
               allowClear
+              placeholder={[
+                getTranslation('start_date'),
+                getTranslation('end_date'),
+              ]}
             />
             <Select
               placeholder={getTranslation('filter_by_reading_type')}
               value={graphFilter}
               onChange={handleGraphFilterChange}
-              style={{ width: 200, marginBottom: 16 }}
+              style={{ width: '200px', maxWidth: '100%', marginBottom: 16 }}
             >
               <Option value="instant">{getTranslation('minute_by_minute')}</Option>
               <Option value="hourly">{getTranslation('hourly')}</Option>
@@ -138,17 +142,21 @@ const DeviceDetails: React.FC = () => {
       label: getTranslation('data_table_tab'),
       children: (
         <>
-          <div className="flex gap-4 justify-end w-full" style={{ maxWidth: '1200px' }}>
+          <div className="flex flex-wrap gap-4 justify-end w-full" style={{ maxWidth: '100%' }}>
             <RangePicker
               onChange={handleTableDateChange}
-              style={{ marginBottom: 16 }}
+              style={{ marginBottom: 16, width: '300px', maxWidth: '100%' }}
               allowClear
+              placeholder={[
+                getTranslation('start_date'),
+                getTranslation('end_date'),
+              ]}
             />
             <Select
               placeholder={getTranslation('filter_by_reading_type')}
               value={tableFilter}
               onChange={handleTableFilterChange}
-              style={{ width: 200, marginBottom: 16 }}
+              style={{ width: '200px', maxWidth: '100%', marginBottom: 16 }}
             >
               <Option value="instant">{getTranslation('minute_by_minute')}</Option>
               <Option value="hourly">{getTranslation('hourly')}</Option>
@@ -168,9 +176,16 @@ const DeviceDetails: React.FC = () => {
 
   return (
     <ConfigProvider locale={ptBR}>
-      <div className="flex flex-col gap-8 items-center sm:items-center flex-1">
-        <Title level={2}>{getTranslation('device_data')}</Title>
-        <Tabs defaultActiveKey="1" items={tabItems} />
+      <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', padding: '16px', width: '100%', maxWidth: '1200px', margin: '0 auto' }}>
+        <Title level={2} style={{ textAlign: 'center', fontSize: 'clamp(1.5rem, 5vw, 2rem)' }}>
+          {getTranslation('device_data')}
+        </Title>
+        <Tabs
+          defaultActiveKey="1"
+          items={tabItems}
+          style={{ width: '100%' }}
+          tabBarStyle={{ justifyContent: 'center', flexWrap: 'wrap' }}
+        />
       </div>
     </ConfigProvider>
   );

@@ -3,6 +3,7 @@ import 'leaflet/dist/leaflet.css';
 import { Map } from 'leaflet';
 import { Device } from '../models/Device';
 import { Reading } from '../models/Reading';
+import { getTranslation } from '../utils/i18n'; // Import translation utility
 
 interface MapComponentProps {
   devices: Device[];
@@ -68,13 +69,13 @@ const MapComponent: React.FC<MapComponentProps> = ({ devices, readings }) => {
               iconAnchor: [20, 20],
             });
 
-            const dateTime = reading ? new Date(reading.ts).toLocaleString() : 'N/A';
+            const dateTime = reading ? new Date(reading.ts).toLocaleString() : getTranslation('not_available');
 
             L.marker([device.latitude, device.longitude], { icon: customIcon }).addTo(map)
               .bindPopup(`
                 <strong>${device.name}</strong><br />
-                ${selectedValue.toUpperCase()}: ${value}<br />
-                <strong>Date/Time:</strong> ${dateTime}
+                ${getTranslation(selectedValue)}: ${value}<br />
+                <strong>${getTranslation('date_time')}:</strong> ${dateTime}
               `);
           }
         });
@@ -106,7 +107,7 @@ const MapComponent: React.FC<MapComponentProps> = ({ devices, readings }) => {
         }}
       >
         <label htmlFor="value-select" style={{ fontWeight: 'bold', marginBottom: '5px', display: 'block' }}>
-          Selecionar Valor:
+          {getTranslation('select_value')}:
         </label>
         <select
           id="value-select"
@@ -114,11 +115,9 @@ const MapComponent: React.FC<MapComponentProps> = ({ devices, readings }) => {
           onChange={(e) => setSelectedValue(e.target.value as 'co2' | 'tp' | 'hm')}
           style={{ padding: '5px', borderRadius: '4px', border: '1px solid #ccc' }}
         >
-          <option
-            value="co2">CO₂</option>
-          <option value="tp">Temperatura</option>
-
-          <option value="hm">Umidade</option>
+          <option value="co2">{getTranslation('co2')}</option>
+          <option value="tp">{getTranslation('temperature')}</option>
+          <option value="hm">{getTranslation('humidity')}</option>
         </select>
       </div>
 

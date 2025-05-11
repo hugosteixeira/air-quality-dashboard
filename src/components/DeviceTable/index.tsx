@@ -80,15 +80,17 @@ const DeviceTable: React.FC<DeviceTableProps> = ({ devices, readings }) => {
   ];
 
   return (
-    <Table
-      dataSource={devices}
-      columns={columns}
-      rowKey="id"
-      size="small"
-      pagination={false}
-      scroll={{ x: 'max-content' }}
-      style={{ width: '100%', maxWidth: '100%' }}
-    />
+    <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', width: '100%', overflowX: 'auto' }}>
+      <Table
+        dataSource={devices}
+        columns={columns}
+        rowKey="id"
+        size="small"
+        pagination={false}
+        scroll={{ x: 'max-content' }}
+        style={{ width: '100%', maxWidth: '100%' }}
+      />
+    </div>
   );
 };
 

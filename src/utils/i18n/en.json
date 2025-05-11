@@ -24,5 +24,7 @@
     "unknown_error": "An unknown error occurred",
     "no_data": "No data available for the selected devices and property.",
     "reading_date": "Reading Date",
-    "not_available": "Not Available"
+    "not_available": "Not Available",
+    "start_date": "Start Date",
+    "end_date": "End Date"
 }

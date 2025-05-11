@@ -58,7 +58,7 @@ export default function RootLayout({
             />
           </Sider>
           <Layout>
-            <Content className="content">
+            <Content className="content" style={{ padding: '16px', width: '100%', margin: '0 auto' }}>
               {children}
             </Content>
           </Layout>

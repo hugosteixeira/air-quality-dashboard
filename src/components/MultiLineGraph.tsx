@@ -86,13 +86,23 @@ const MultiLineGraph: React.FC<MultiLineGraphProps> = ({ data, dataKey, label })
 
       chart.setOption(option);
 
+      const resizeObserver = new ResizeObserver(() => {
+        chart.resize();
+      });
+      resizeObserver.observe(chartRef.current);
+
       return () => {
+        resizeObserver.disconnect();
         chart.dispose();
       };
     }
   }, [data, dataKey, label]);
 
-  return <div ref={chartRef} style={{ width: '100%', height: '400px' }} />;
+  return (
+    <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', width: '100%', height: '100%' }}>
+      <div ref={chartRef} style={{ width: '100%', height: '100%' }} />
+    </div>
+  );
 };
 
 export default MultiLineGraph;

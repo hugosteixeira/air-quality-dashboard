@@ -44,7 +44,7 @@ const MapPage: React.FC = () => {
   }, []);
 
   return (
-    <div id="map-container" style={{ flex: 1, height: '100vh' }}>
+    <div id="map-container" style={{ flex: 1, height: '100vh', width: '100%' }}>
       <MapComponent devices={devices} readings={readings} />
     </div>
   );
