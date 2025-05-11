@@ -22,7 +22,7 @@ export const fetchReadings = async (filters: { reading_type?: string; deviceIds?
   try {
     const { reading_type, deviceIds, start_ts, end_ts, skip, limit } = filters;
     const url = `${API_BASE_URL}/readings`;
-    const body: { [key: string]: any } = {};
+    const body: { reading_type?: string; device_ids?: string[]; start_ts?: string; end_ts?: string; skip?: number; limit?: number } = {}; // Replaced 'any' with specific type
 
     if (reading_type) body.reading_type = reading_type;
     if (deviceIds && deviceIds.length > 0) body.device_ids = deviceIds; // Pass device_ids in the body

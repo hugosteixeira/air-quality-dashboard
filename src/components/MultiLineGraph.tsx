@@ -41,10 +41,10 @@ const MultiLineGraph: React.FC<MultiLineGraphProps> = ({ data, dataKey, label })
         },
         tooltip: {
           trigger: 'axis',
-          formatter: (params: any) => {
+          formatter: (params: { data: [number, number]; seriesName: string }[]) => {
             const date = new Date(params[0].data[0]).toLocaleString('pt-BR');
             const values = params
-              .map((param: any) => `${param.seriesName}: ${param.data[1]}`)
+              .map((param) => `${param.seriesName}: ${param.data[1]}`)
               .join('<br/>');
             return `${date}<br/>${values}`;
           },

@@ -7,6 +7,7 @@ import { Reading } from '../models/Reading';
 import { Input, Typography } from 'antd';
 import Link from 'next/link';
 import '../styles/globals.css';
+import { getTranslation } from '../utils/i18n'; // Import translation utility
 
 const { Search } = Input;
 const { Title } = Typography;
@@ -69,7 +70,7 @@ const Dashboard: React.FC = () => {
   };
 
   if (error) {
-    return <div>Erro: {error}</div>;
+    return <div>{getTranslation('error')}: {error}</div>;
   }
 
   return (
@@ -84,10 +85,10 @@ const Dashboard: React.FC = () => {
         alignItems: 'center',
       }}
     >
-      <Title level={2}>Dispositivos</Title>
+      <Title level={2}>{getTranslation('devices')}</Title>
       <div className="w-full flex justify-end">
         <Search
-          placeholder="Pesquisar"
+          placeholder={getTranslation('search')}
           onChange={(e) => setSearchQuery(e.target.value)}
           style={{ marginBottom: 16, width: '100%', maxWidth: 200 }}
         />
@@ -100,16 +101,16 @@ const Dashboard: React.FC = () => {
             >
               <h3 className="text-lg font-semibold">{device.name}</h3>
               <p className="text-sm text-gray-500">
-                CO₂: {readings[device.id]?.co2 ?? 'N/A'} ppm
+                {getTranslation('co2')}: {readings[device.id]?.co2 ?? getTranslation('not_available')} ppm
               </p>
               <p className="text-sm text-gray-500">
-                Umidade: {readings[device.id]?.hm ?? 'N/A'}%
+                {getTranslation('humidity')}: {readings[device.id]?.hm ?? getTranslation('not_available')}%
               </p>
               <p className="text-sm text-gray-500">
-                Temperatura: {readings[device.id]?.tp ?? 'N/A'}°C
+                {getTranslation('temperature')}: {readings[device.id]?.tp ?? getTranslation('not_available')}°C
               </p>
               <p className="text-sm text-gray-500">
-                Data da Leitura: {readings[device.id]?.ts ? formatDate(readings[device.id].ts) : 'N/A'}
+                {getTranslation('reading_date')}: {readings[device.id]?.ts ? formatDate(readings[device.id].ts) : getTranslation('not_available')}
               </p>
             </div>
           </Link>

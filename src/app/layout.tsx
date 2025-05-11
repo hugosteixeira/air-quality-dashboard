@@ -5,6 +5,7 @@ import { Layout, Menu, Typography } from 'antd';
 import { useRouter, usePathname } from 'next/navigation';
 import "../styles/globals.css";
 import { HomeOutlined, EnvironmentOutlined, ExportOutlined, BarChartOutlined } from '@ant-design/icons';
+import { getTranslation } from '../utils/i18n'; // Update the path to the correct location of the i18n module
 
 const { Sider, Content } = Layout;
 const { Title } = Typography;
@@ -18,16 +19,16 @@ export default function RootLayout({
   const pathname = usePathname() || '/';
 
   const menuItems = [
-    { key: '/', label: 'Devices', icon: <HomeOutlined /> },
-    { key: '/map', label: 'Mapa', icon: <EnvironmentOutlined /> },
-    { key: '/export', label: 'Exportar dados', icon: <ExportOutlined /> },
-    { key: '/devices-graph', label: 'Gráficos', icon: <BarChartOutlined /> }, // Correctly linked menu item
+    { key: '/', label: getTranslation('devices', 'en'), icon: <HomeOutlined /> },
+    { key: '/map', label: getTranslation('map', 'en'), icon: <EnvironmentOutlined /> },
+    { key: '/export', label: getTranslation('export_data', 'en'), icon: <ExportOutlined /> },
+    { key: '/devices-graph', label: getTranslation('graphs', 'en'), icon: <BarChartOutlined /> },
   ];
 
   return (
-    <html lang="pt-BR">
+    <html lang="en">
       <Head>
-        <title>Aplicativo de Qualidade do Ar</title>
+        <title>{getTranslation('app_title', 'en')}</title>
       </Head>
       <body style={{ margin: 0, padding: 0 }}>
         <Layout style={{ minHeight: '100vh' }}>
@@ -39,7 +40,7 @@ export default function RootLayout({
           >
             <div className="p-4">
               <Title level={4} style={{ color: 'white' }}>
-                Aplicativo de Qualidade do Ar
+                {getTranslation('app_title', 'en')}
               </Title>
             </div>
             <Menu

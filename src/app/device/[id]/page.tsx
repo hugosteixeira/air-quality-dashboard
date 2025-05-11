@@ -10,6 +10,7 @@ import GraphsTable from '../../../components/GraphsTable';
 import { Dayjs } from 'dayjs';
 import ptBR from 'antd/lib/locale/pt_BR';
 import '../../../styles/globals.css';
+import { getTranslation } from '../../../utils/i18n'; // Import translation utility
 
 const { Option } = Select;
 const { Title } = Typography;
@@ -108,7 +109,7 @@ const DeviceDetails: React.FC = () => {
   const tabItems = [
     {
       key: '1',
-      label: 'Gráficos',
+      label: getTranslation('graphs_tab'),
       children: (
         <>
           <div className="flex gap-4 justify-end w-full" style={{ width: '1200px' }}>
@@ -118,14 +119,14 @@ const DeviceDetails: React.FC = () => {
               allowClear
             />
             <Select
-              placeholder="Filtrar por Tipo de Leitura"
+              placeholder={getTranslation('filter_by_reading_type')}
               value={graphFilter}
               onChange={handleGraphFilterChange}
               style={{ width: 200, marginBottom: 16 }}
             >
-              <Option value="instant">Minuto a Minuto</Option>
-              <Option value="hourly">Horário</Option>
-              <Option value="daily">Diário</Option>
+              <Option value="instant">{getTranslation('minute_by_minute')}</Option>
+              <Option value="hourly">{getTranslation('hourly')}</Option>
+              <Option value="daily">{getTranslation('daily')}</Option>
             </Select>
           </div>
           <GraphsTable data={graphReadings} readingType={graphFilter} />
@@ -134,7 +135,7 @@ const DeviceDetails: React.FC = () => {
     },
     {
       key: '2',
-      label: 'Tabela de Dados',
+      label: getTranslation('data_table_tab'),
       children: (
         <>
           <div className="flex gap-4 justify-end w-full" style={{ maxWidth: '1200px' }}>
@@ -144,14 +145,14 @@ const DeviceDetails: React.FC = () => {
               allowClear
             />
             <Select
-              placeholder="Filtrar por Tipo de Leitura"
+              placeholder={getTranslation('filter_by_reading_type')}
               value={tableFilter}
               onChange={handleTableFilterChange}
               style={{ width: 200, marginBottom: 16 }}
             >
-              <Option value="instant">Minuto a Minuto</Option>
-              <Option value="hourly">Horário</Option>
-              <Option value="daily">Diário</Option>
+              <Option value="instant">{getTranslation('minute_by_minute')}</Option>
+              <Option value="hourly">{getTranslation('hourly')}</Option>
+              <Option value="daily">{getTranslation('daily')}</Option>
             </Select>
           </div>
           <DataTable
@@ -168,7 +169,7 @@ const DeviceDetails: React.FC = () => {
   return (
     <ConfigProvider locale={ptBR}>
       <div className="flex flex-col gap-8 items-center sm:items-center flex-1">
-        <Title level={2}>Dados do Dispositivo</Title>
+        <Title level={2}>{getTranslation('device_data')}</Title>
         <Tabs defaultActiveKey="1" items={tabItems} />
       </div>
     </ConfigProvider>
