@@ -37,24 +37,15 @@ const MultiLineGraph: React.FC<MultiLineGraphProps> = ({ data, dataKey, label })
         title: {
           text: label,
           left: 'center',
-          top: '0%', // Add spacing above the title
-        },
-        tooltip: {
-          trigger: 'axis',
-          formatter: (params: { data: [number, number]; seriesName: string }[]) => {
-            const date = new Date(params[0].data[0]).toLocaleString('pt-BR');
-            const values = params
-              .map((param) => `${param.seriesName}: ${param.data[1]}`)
-              .join('<br/>');
-            return `${date}<br/>${values}`;
-          },
+          top: '16%', // Move title further down
+          textAlign: 'center',
         },
         legend: {
           data: data.map((deviceData) => deviceData.deviceName),
-          top: '5%', // Position the legend below the title
+          top: '22%', // Move legend further down to avoid overlap with title
         },
         grid: {
-          top: '25%', // Adjust grid to avoid overlapping with the legend
+          top: '32%', // Move chart content lower
           bottom: '15%', // Leave space for the slider
         },
         xAxis: {
@@ -99,8 +90,20 @@ const MultiLineGraph: React.FC<MultiLineGraphProps> = ({ data, dataKey, label })
   }, [data, dataKey, label]);
 
   return (
-    <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', width: '100%', height: '100%' }}>
-      <div ref={chartRef} style={{ width: '100%', height: '100%' }} />
+    <div
+      style={{
+        display: 'flex',
+        justifyContent: 'center',
+        alignItems: 'flex-start',
+        width: '100%',
+        minHeight: '500px',
+        height: '100%',
+        paddingTop: '32px', // Valor mais razoável para não exagerar
+        boxSizing: 'border-box',
+        zIndex: 1, // Garante que fique acima do menu lateral
+      }}
+    >
+      <div ref={chartRef} style={{ width: '100%', minHeight: '400px', height: '100%' }} />
     </div>
   );
 };

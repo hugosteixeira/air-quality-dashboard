@@ -192,4 +192,11 @@ body {
   .ant-table {
     max-width: 50%;
   }
+
+  /* Highest z-index for sidebar open button */
+  .sidebar-toggle-btn,
+  .ant-layout-sider-trigger {
+    z-index: 9999 !important;
+    position: absolute !important;
+  }
 }

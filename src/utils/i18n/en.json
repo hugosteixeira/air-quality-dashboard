@@ -26,5 +26,20 @@
     "reading_date": "Reading Date",
     "not_available": "Not Available",
     "start_date": "Start Date",
-    "end_date": "End Date"
+    "end_date": "End Date",
+    "legend": "Legend",
+    "filter": "Filter",
+    "co2_excellent": "<= 400 ppm (Excellent)",
+    "co2_good": "401-1000 ppm (Good)",
+    "co2_moderate": "1001-2000 ppm (Moderate)",
+    "co2_poor": "> 2000 ppm (Poor)",
+    "tp_cold": "< 18°C (Cold)",
+    "tp_comfort": "18-24°C (Comfort)",
+    "tp_warm": "25-29°C (Warm)",
+    "tp_hot": ">= 30°C (Hot)",
+    "hm_dry": "< 30% (Too Dry)",
+    "hm_comfort": "30-60% (Comfort)",
+    "hm_humid": "61-80% (Humid)",
+    "hm_too_humid": "> 80% (Too Humid)",
+    "not_available": "N/A"
 }

@@ -1,7 +1,10 @@
-import React from 'react';
-import { Table } from 'antd';
+import React, { useCallback } from 'react';
+import { DataTable as PrimeDataTable } from 'primereact/datatable';
+import { Column } from 'primereact/column';
+import { Paginator, PaginatorPageChangeEvent } from 'primereact/paginator';
 import { Reading } from '../models/Reading';
 import { getTranslation } from '../utils/i18n'; // Import translation utility
+
 
 interface DataTableProps {
   data: Reading[];
@@ -11,66 +14,49 @@ interface DataTableProps {
 }
 
 const DataTable: React.FC<DataTableProps> = ({ data, currentPage, totalReadings, onPageChange }) => {
-  const columns = [
-    {
-      title: getTranslation('date_time'),
-      dataIndex: 'ts',
-      key: 'ts',
-      render: (text: string) => new Date(text).toLocaleString('pt-BR'),
+  const rowsPerPage = 10;
+
+  // Use useCallback to memoize the onPageChange handler
+  const handlePageChange = useCallback(
+    (e: PaginatorPageChangeEvent) => {
+      if (e.page + 1 !== currentPage) {
+        onPageChange(e.page + 1);
+      }
     },
-    {
-      title: <span>{getTranslation('co2')} <span className="table-unit">(ppm)</span></span>,
-      dataIndex: 'co2',
-      key: 'co2',
-    },
-    {
-      title: <span>{getTranslation('humidity')} <span className="table-unit">(%)</span></span>,
-      dataIndex: 'hm',
-      key: 'hm',
-    },
-    {
-      title: <span>PM1 <span className="table-unit">(µg/m³)</span></span>,
-      dataIndex: 'pm1',
-      key: 'pm1',
-    },
-    {
-      title: <span>PM10 <span className="table-unit">(µg/m³)</span></span>,
-      dataIndex: 'pm10_conc',
-      key: 'pm10_conc',
-    },
-    {
-      title: <span>PM25 <span className="table-unit">(µg/m³)</span></span>,
-      dataIndex: 'pm25_conc',
-      key: 'pm25_conc',
-    },
-    {
-      title: <span>{getTranslation('pressure')} <span className="table-unit">(mb)</span></span>,
-      dataIndex: 'pr',
-      key: 'pr',
-    },
-    {
-      title: <span>{getTranslation('temperature')} <span className="table-unit">(°C)</span></span>,
-      dataIndex: 'tp',
-      key: 'tp',
-    },
-  ];
+    [currentPage, onPageChange]
+  );
 
   return (
-    <Table
-      dataSource={data}
-      columns={columns}
-      rowKey="ts"
-      size="small"
-      pagination={{
-        current: currentPage,
-        pageSize: 10,
-        total: totalReadings,
-        onChange: onPageChange,
-        showSizeChanger: false,
-      }}
-      scroll={{ x: 'max-content' }}
-      style={{ width: '100%', maxWidth: '100%' }}
-    />
+    <div > {/* Add a custom container class */}
+      <PrimeDataTable
+        value={data}
+        scrollable
+        scrollHeight="flex"
+      >
+        <Column
+          field="ts"
+          header={getTranslation('date_time')}
+          body={(rowData) => new Date(rowData.ts).toLocaleString('pt-BR')}
+          style={{ textAlign: 'center' }} // Center align content
+        />
+        <Column field="co2" header={`${getTranslation('co2')} (ppm)`} style={{ textAlign: 'center' }} className="column-header-center" />
+        <Column field="hm" header={`${getTranslation('humidity')} (%)`} style={{ textAlign: 'center' }} className="column-header-center" />
+        <Column field="pm1" header="PM1 (µg/m³)" style={{ textAlign: 'center' }} className="column-header-center" />
+        <Column field="pm10_conc" header="PM10 (µg/m³)" style={{ textAlign: 'center' }} className="column-header-center" />
+        <Column field="pm25_conc" header="PM25 (µg/m³)" style={{ textAlign: 'center' }} className="column-header-center" />
+        <Column field="pr" header={`${getTranslation('pressure')} (mb)`} style={{ textAlign: 'center' }} className="column-header-center" />
+        <Column field="tp" header={`${getTranslation('temperature')} (°C)`} style={{ textAlign: 'center' }} className="column-header-center" />
+      </PrimeDataTable>
+      <Paginator
+        first={(currentPage - 1) * rowsPerPage}
+        rows={rowsPerPage}
+        totalRecords={totalReadings}
+        onPageChange={handlePageChange} // Use the memoized handler
+        template={{
+          layout: 'PrevPageLink PageLinks NextPageLink ',
+        }}
+      />
+    </div>
   );
 };
 

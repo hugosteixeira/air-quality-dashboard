@@ -6,6 +6,9 @@ import { useRouter, usePathname } from 'next/navigation';
 import "../styles/globals.css";
 import { HomeOutlined, EnvironmentOutlined, ExportOutlined, BarChartOutlined } from '@ant-design/icons';
 import { getTranslation } from '../utils/i18n'; // Update the path to the correct location of the i18n module
+import 'primereact/resources/themes/saga-blue/theme.css'; // Theme
+import 'primereact/resources/primereact.min.css'; // Core CSS
+import 'primeicons/primeicons.css'; // Icons
 
 const { Sider, Content } = Layout;
 const { Title } = Typography;
@@ -57,8 +60,19 @@ export default function RootLayout({
               }}
             />
           </Sider>
-          <Layout>
-            <Content className="content" style={{ padding: '16px', width: '100%', margin: '0 auto' }}>
+          <Layout style={{ overflow: 'hidden', position: 'relative', minHeight: '100vh' }}>
+            <Content
+              className="content"
+              style={{
+                padding: '16px',
+                width: '100%',
+                maxWidth: '1200px', // Restrict content width for centralization
+                margin: '0 auto', // Center content horizontally
+                transition: 'transform 0.3s ease',
+                position: 'relative', // Ensure proper positioning
+                minHeight: '100vh', // Ensure content fills the viewport height
+              }}
+            >
               {children}
             </Content>
           </Layout>

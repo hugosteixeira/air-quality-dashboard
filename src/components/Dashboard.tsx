@@ -75,29 +75,43 @@ const Dashboard: React.FC = () => {
 
   return (
     <div
-      className="flex flex-col gap-8 items-center sm:items-center flex-1"
+      className="flex flex-col gap-8 items-center w-full"
       style={{
-        maxWidth: 'calc(100vw - 250px)',
         minHeight: '100vh',
-        marginLeft: '250px',
+        padding: '16px',
+        maxWidth: '1200px', // Restrict content width
+        margin: '0 auto', // Center content
         display: 'flex',
         justifyContent: 'center',
         alignItems: 'center',
       }}
     >
-      <Title level={2}>{getTranslation('devices')}</Title>
+      <Title level={2} style={{ textAlign: 'center', fontSize: 'clamp(1.5rem, 5vw, 2rem)' }}>
+        {getTranslation('devices')}
+      </Title>
       <div className="w-full flex justify-end">
         <Search
           placeholder={getTranslation('search')}
           onChange={(e) => setSearchQuery(e.target.value)}
-          style={{ marginBottom: 16, width: '100%', maxWidth: 200 }}
+          style={{ marginBottom: 16, width: '100%', maxWidth: '300px' }}
         />
       </div>
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 w-full">
+      <div
+        className="grid gap-6 w-full"
+        style={{
+          gridTemplateColumns: 'repeat(auto-fit, minmax(250px, 1fr))',
+        }}
+      >
         {filteredDevices.map(device => (
           <Link key={device.id} href={`/device/${device.id}`} passHref>
             <div
               className="bg-white rounded-2xl shadow-md p-4 hover:shadow-lg transition-shadow cursor-pointer"
+              style={{
+                height: '200px', // Fixed card height
+                display: 'flex',
+                flexDirection: 'column',
+                justifyContent: 'space-between',
+              }}
             >
               <h3 className="text-lg font-semibold">{device.name}</h3>
               <p className="text-sm text-gray-500">

@@ -83,13 +83,17 @@ const ExportData: React.FC = () => {
 
   return (
     <ConfigProvider locale={ptBR}>
-      <div className="flex flex-col gap-8 items-center sm:items-center flex-1">
-        <Title level={2}>Exportar Dados</Title>
-        <div className="flex gap-4 justify-end w-full" style={{ maxWidth: '1200px' }}>
+      <div className="flex flex-col gap-8 items-center sm:items-center flex-1 px-2 w-full">
+        <Title level={2} className="text-center w-full">Exportar Dados</Title>
+        <div
+          className="flex flex-col sm:flex-row gap-4 sm:justify-end justify-center sm:items-end items-center w-full"
+          style={{ maxWidth: '1200px' }}
+        >
           <Select
             placeholder="Selecionar Dispositivo"
             onChange={setSelectedDevice}
-            style={{ width: 200, marginBottom: 16 }}
+            style={{ width: '100%', maxWidth: 200, marginBottom: 16 }}
+            className="sm:w-[200px] w-full"
           >
             {devices.map(device => (
               <Option key={device.id} value={device.id}>
@@ -100,14 +104,24 @@ const ExportData: React.FC = () => {
           <Select
             placeholder="Filtrar por Tipo de Leitura"
             onChange={setReadingType}
-            style={{ width: 200, marginBottom: 16 }}
+            style={{ width: '100%', maxWidth: 200, marginBottom: 16 }}
+            className="sm:w-[200px] w-full"
           >
             <Option value="instant">Minuto a Minuto</Option>
             <Option value="hourly">Horário</Option>
             <Option value="daily">Diário</Option>
           </Select>
-          <RangePicker onChange={handleDateChange} style={{ marginBottom: 16 }} />
-          <Button type="primary" onClick={handleExport} style={{ marginBottom: 16 }}>
+          <RangePicker
+            onChange={handleDateChange}
+            style={{ width: '100%', maxWidth: 220, marginBottom: 16 }}
+            className="sm:w-[220px] w-full"
+          />
+          <Button
+            type="primary"
+            onClick={handleExport}
+            style={{ width: '100%', maxWidth: 120, marginBottom: 16 }}
+            className="sm:w-[120px] w-full"
+          >
             Exportar
           </Button>
         </div>

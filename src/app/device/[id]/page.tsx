@@ -141,50 +141,36 @@ const DeviceDetails: React.FC = () => {
       key: '2',
       label: getTranslation('data_table_tab'),
       children: (
-        <>
-          <div className="flex flex-wrap gap-4 justify-end w-full" style={{ maxWidth: '100%' }}>
-            <RangePicker
-              onChange={handleTableDateChange}
-              style={{ marginBottom: 16, width: '300px', maxWidth: '100%' }}
-              allowClear
-              placeholder={[
-                getTranslation('start_date'),
-                getTranslation('end_date'),
-              ]}
+        <div style={{ width: '100%', paddingBottom: '16px' }}>
+          <div style={{ width: '100%', margin: '0 auto' }}>
+            <DataTable
+              data={tableReadings}
+              currentPage={currentPage}
+              totalReadings={totalReadings}
+              onPageChange={handleTableChange}
             />
-            <Select
-              placeholder={getTranslation('filter_by_reading_type')}
-              value={tableFilter}
-              onChange={handleTableFilterChange}
-              style={{ width: '200px', maxWidth: '100%', marginBottom: 16 }}
-            >
-              <Option value="instant">{getTranslation('minute_by_minute')}</Option>
-              <Option value="hourly">{getTranslation('hourly')}</Option>
-              <Option value="daily">{getTranslation('daily')}</Option>
-            </Select>
           </div>
-          <DataTable
-            data={tableReadings}
-            currentPage={currentPage}
-            totalReadings={totalReadings}
-            onPageChange={handleTableChange}
-          />
-        </>
+        </div>
       ),
     },
   ];
 
   return (
     <ConfigProvider locale={ptBR}>
-      <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', padding: '16px', width: '100%', maxWidth: '1200px', margin: '0 auto' }}>
+      <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', padding: '16px', margin: '0 auto' }}>
         <Title level={2} style={{ textAlign: 'center', fontSize: 'clamp(1.5rem, 5vw, 2rem)' }}>
           {getTranslation('device_data')}
         </Title>
         <Tabs
           defaultActiveKey="1"
           items={tabItems}
-          style={{ width: '100%' }}
-          tabBarStyle={{ justifyContent: 'center', flexWrap: 'wrap' }}
+          style={{
+            width: '100%',
+            textAlign: 'center', // Center align the tabs' titles
+          }}
+          tabBarStyle={{
+            justifyContent: 'center', // Ensure the tabs are centered
+          }}
         />
       </div>
     </ConfigProvider>

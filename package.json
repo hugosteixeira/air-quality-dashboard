@@ -23,6 +23,8 @@
     "json2csv": "^6.0.0-alpha.2",
     "leaflet": "^1.9.4",
     "next": "latest",
+    "primeicons": "^7.0.0",
+    "primereact": "^10.9.5",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "recharts": "^2.15.0"

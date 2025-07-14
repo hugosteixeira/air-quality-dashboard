@@ -82,8 +82,23 @@ const DevicesGraphPage: React.FC = () => {
   console.log('Graph Data:', graphData); // Debugging: Log graphData to ensure it's being prepared correctly
 
   return (
-    <div style={{ padding: '16px' }}>
-      <h1 style={{ fontSize: '24px', fontWeight: 'bold', marginBottom: '16px' }}>
+    <div
+      style={{
+        padding: '16px',
+        paddingTop: '64px', // Espaço extra para não ficar atrás do menu lateral
+        minHeight: 'calc(100vh - 64px)', // Garante altura mínima visível
+        boxSizing: 'border-box',
+      }}
+    >
+      <h1
+        style={{
+          fontSize: '24px',
+          fontWeight: 'bold',
+          marginBottom: '16px',
+          textAlign: 'center', // Centraliza o título
+          marginTop: '0', // Remove margem superior extra
+        }}
+      >
         {getTranslation('graphs')}
       </h1>
       <div style={{ marginBottom: '16px', display: 'flex', gap: '16px', flexWrap: 'wrap' }}>
@@ -150,11 +165,20 @@ const DevicesGraphPage: React.FC = () => {
           </Space>
         </div>
       </div>
-      <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', minHeight: '500px', height: '70vh' }}>
+      <div
+        style={{
+          display: 'flex',
+          justifyContent: 'center',
+          alignItems: 'center',
+          minHeight: '500px',
+          height: '70vh',
+          width: '100%',
+        }}
+      >
         {graphData.length > 0 ? (
           <MultiLineGraph
-            data={graphData} // Pass multi-line data to the graph
-            dataKey="value" // Key for the property value
+            data={graphData}
+            dataKey="value"
             label={selectedProperty.toUpperCase()}
           />
         ) : (
