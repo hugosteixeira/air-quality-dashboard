@@ -24,9 +24,9 @@ const DeviceDetails: React.FC = () => {
   const [tableReadings, setTableReadings] = useState<Reading[]>([]);
   const [error, setError] = useState<string | null>(null);
   const [graphFilter, setGraphFilter] = useState<string>('instant');
-  const [tableFilter, setTableFilter] = useState<string>('instant');
+  const [tableFilter] = useState<string>('instant');
   const [graphDateRange, setGraphDateRange] = useState<[string, string] | null>(null);
-  const [tableDateRange, setTableDateRange] = useState<[string, string] | null>(null);
+  const [tableDateRange] = useState<[string, string] | null>(null);
   const [currentPage, setCurrentPage] = useState<number>(1);
   const [totalReadings, setTotalReadings] = useState<number>(0);
 
@@ -34,17 +34,11 @@ const DeviceDetails: React.FC = () => {
     setGraphDateRange(dates && dates.length === 2 ? dateStrings : null);
   };
 
-  const handleTableDateChange = (dates: (Dayjs | null)[] | null, dateStrings: [string, string]) => {
-    setTableDateRange(dates && dates.length === 2 ? dateStrings : null);
-  };
-
   const handleGraphFilterChange = (value: string) => {
     setGraphFilter(value);
   };
 
-  const handleTableFilterChange = (value: string) => {
-    setTableFilter(value);
-  };
+
 
   const handleTableChange = (page: number) => {
     setCurrentPage(page);
